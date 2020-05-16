@@ -3,33 +3,67 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PlanspielWeb</title>
+    <title>@ViewData["Title"] - Planspiel - BWL - Uni Hildesheim</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PlanspielWeb</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        <nav class="navbar navbar-expand-md navbar-light">
+            <div class="navbar-collapse collapse w-25 order-1 order-md-0 dual-collapse2">
+                @if (Context.Session.TryGet<DAL.Models.User>("user", out var user) && user.Admin) {
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item @(ViewData["current"] == "users" ? "active" : "")">
+                            <a class="nav-link" asp-controller="Users" asp-action="Index">Users</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="nav-item @(ViewData["current"] == "teams" ? "active" : "")">
+                            <a class="nav-link" asp-controller="Teams" asp-action="Index">Teams</a>
+                        </li>
+                        <li class="nav-item @(ViewData["current"] == "saveData" ? "active" : "")">
+                            <a class="nav-link" asp-controller="SaveDatas" asp-action="Index">Save Data</a>
+                        </li>
+                        <li class="nav-item @(ViewData["current"] == "shareValues" ? "active" : "")">
+                            <a class="nav-link" asp-controller="Home" asp-action="ShareValues">Shares</a>
                         </li>
                     </ul>
-                </div>
+                }
+            </div>
+            <div class="mx-auto order-0">
+                <a class="navbar-brand mx-auto" asp-controller="Home" asp-action="Index">Planspiel - BWL - Uni Hildesheim</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse w-25 order-3 dual-collapse2">
+                <ul class="navbar-nav ml-auto">
+                    @if (user != null) {
+                        @if (user.TeamId != null) {
+                            <li class="nav-item @(ViewData["current"] == "myTeam" ? "active" : "")">
+                                <a class="nav-link" asp-controller="Teams" asp-action="Details" asp-route-id="@user.TeamId">Mein Team</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Login" asp-action="Logout">Logout</a>
+                        </li>
+                    } else {
+                        <li class="nav-item @(ViewData["current"] == "login" ? "active" : "")">
+                            <a class="nav-link" asp-controller="Login" asp-action="Index">Login</a>
+                        </li>
+                    }
+                </ul>
             </div>
         </nav>
     </header>
+
     <div class="container">
+        @if (TempData.TryGet<List<AlertViewModel>>("alerts", out var alerts)) {
+            @foreach (var alert in alerts) {
+                <div class="alert @alert.CssClass">
+                    @alert.Message
+                </div>
+            }
+        }
+
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -37,7 +71,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - PlanspielWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            Planspiel | BWL | Uni Hildesheim
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

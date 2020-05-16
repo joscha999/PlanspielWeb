@@ -1,0 +1,69 @@
+﻿@model DAL.Models.SaveData
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>SaveData</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="SteamID" class="control-label"></label>
+                <input asp-for="SteamID" class="form-control" />
+                <span asp-validation-for="SteamID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeStamp" class="control-label"></label>
+                <input asp-for="TimeStamp" class="form-control" />
+                <span asp-validation-for="TimeStamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profit" class="control-label"></label>
+                <input asp-for="Profit" class="form-control" />
+                <span asp-validation-for="Profit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompanyValue" class="control-label"></label>
+                <input asp-for="CompanyValue" class="form-control" />
+                <span asp-validation-for="CompanyValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DemandSatisfaction" class="control-label"></label>
+                <input asp-for="DemandSatisfaction" class="form-control" />
+                <span asp-validation-for="DemandSatisfaction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MachineUptime" class="control-label"></label>
+                <input asp-for="MachineUptime" class="form-control" />
+                <span asp-validation-for="MachineUptime" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="AbleToPayLoansBack" /> @Html.DisplayNameFor(model => model.AbleToPayLoansBack)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="AveragePollution" class="control-label"></label>
+                <input asp-for="AveragePollution" class="form-control" />
+                <span asp-validation-for="AveragePollution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,88 @@
+﻿@model DAL.Models.Team
+
+@{
+    ViewData["Title"] = "Teamübersicht";
+    Context.Session.TryGet<DAL.Models.User>("user", out var user);
+
+    if (user != null && user.TeamId == Model.Id)
+        ViewData["current"] = "myTeam";
+}
+
+<div>
+    <hr />
+    <h4>Teamübersicht</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        @if (user != null && user.Admin) {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SteamID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SteamID)
+            </dd>
+        }
+    </dl>
+</div>
+
+<div>
+    <hr />
+    <h4>Spieler</h4>
+    @foreach (var member in Model.Members) {
+        @if (user != null && user.Admin) {
+            <a href="/Users/Details/@member.Id">@member.Username</a><br />
+        } else {
+            @member.Username<br />
+        }
+    }
+</div>
+
+@if (user != null && user.Admin) {
+    <div>
+        <hr />
+        <h4>Aktionen</h4>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+}
+
+<div>
+    <hr />
+    <h4>Monatliche Daten</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date time (in-game)</th>
+                <th>Profit</th>
+                <th>Company value</th>
+                @*<th>Demand satisfaction</th>*@
+                <th>Machine uptime</th>
+                <th>Avg. pollution</th>
+
+                @if (user != null && user.Admin) {
+                    <th>Share Price</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in Model.Data) {
+                <tr>
+                    <td>@data.IngameDate</td>
+                    <td>@data.Profit.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                    <td>@data.CompanyValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                    @*<td>@data.DemandSatisfaction</td>*@
+                    <td>@data.MachineUptime.ToString("P2")</td>
+                    <td>@data.AveragePollution.ToString("P2")</td>
+
+                    @if (user != null && user.Admin) {
+                        <td>@data.ShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

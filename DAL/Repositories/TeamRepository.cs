@@ -55,10 +55,29 @@ Values(@id, @name, @sid);",
                 new { id = t.Id, name = t.Name, sid = t.SteamID });
         }
 
-        public SaveData GetSaveData(int id) {
+        public void Update(Team t) {
             EnsureOpen();
 
-            return Database.Connection.Query<SaveData>("SELECT * FROM SaveData WHERE Id = @id", new { id }).FirstOrDefault();
+            Database.Connection.Execute(@"UPDATE Teams SET
+Name = @name, SteamId = @sid
+WHERE Id = @id",
+                new { id = t.Id, name = t.Name, sid = t.SteamID });
+        }
+
+        public void Delete(int? id) {
+            if (id == null)
+                return;
+
+            EnsureOpen();
+
+            Database.Connection.Execute("DELETE FROM Teams WHERE Id = @id;", new { id = id.Value });
+        }
+
+        public SaveData GetSaveData(int steamId) {
+            EnsureOpen();
+
+            return Database.Connection.Query<SaveData>(
+                "SELECT * FROM SaveData WHERE SteamID = @steamId", new { steamId }).FirstOrDefault();
         }
 
         public IEnumerable<SaveData> GetSaveDataForTeam(long steamId) {

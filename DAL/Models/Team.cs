@@ -1,6 +1,7 @@
 ﻿using DAL.Repositories;
 using Dapper;
 using Microsoft.Data.Sqlite;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,8 +14,10 @@ namespace DAL.Models {
         public string Name { get; set; }
         public long SteamID { get; set; }
 
+        [JsonIgnore]
         public IEnumerable<User> Members => teamRepository.GetMembersForId(Id);
 
+        [JsonIgnore]
         public IEnumerable<SaveData> Data => teamRepository.GetSaveDataForTeam(SteamID);
 
         public static void Setup(Database database) {

@@ -25,9 +25,9 @@ namespace PlanspielWeb.Controllers {
                 Profit = data.Profit,
                 CompanyValue = data.CompanyValue,
                 DemandSatisfaction = data.DemandSatisfaction,
-                MachineUptime = data.MachineUptime,
+                MachineUptime = double.IsNaN(data.MachineUptime) ? 1 : data.MachineUptime,
                 AbleToPayLoansBack = data.AbleToPayLoansBack,
-                AveragePollution = data.AveragePollution
+                AveragePollution = double.IsNaN(data.AveragePollution) ? 0 : data.AveragePollution
             });
         }
     }

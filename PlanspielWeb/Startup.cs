@@ -9,6 +9,11 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using DAL.Repositories;
+using System.IO;
+using DAL.Models;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace PlanspielWeb
 {
@@ -16,8 +21,6 @@ namespace PlanspielWeb
     {
         public Startup(IConfiguration configuration)
         {
-            new Database("./db.sqlite");
-
             Configuration = configuration;
         }
 
@@ -26,34 +29,93 @@ namespace PlanspielWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation()
+                .AddNewtonsoftJson();
+
+            //TODO: remove before using in production
+            if (File.Exists("./db.sqlite"))
+                File.Delete("./db.sqlite");
+
+            var db = new Database("./db.sqlite");
+            var sdr = new SaveDataRepository(db);
+            var tr = new TeamRepository(db);
+            var ur = new UserRepository(db, db.PasswordHasher);
+
+            services.AddSingleton(db);
+            services.AddSingleton(sdr);
+            services.AddSingleton(tr);
+            services.AddSingleton(ur);
+
+            //AddTestData(tr, ur, sdr);
+            AddTestDataJoscha(tr, ur);
+
+            services.AddDistributedMemoryCache();
+            services.AddSession(options => options.IdleTimeout = TimeSpan.FromDays(7));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+                app.UseBrowserLink();
+            } else {
+                app.UseForwardedHeaders(new ForwardedHeadersOptions {
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                });
 
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+                app.UseHttpsRedirection();
+            }
+
+            app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+
+        private void AddTestData(TeamRepository tr, UserRepository ur, SaveDataRepository dr) {
+            for (int i = 0; i < 2; i++) {
+                tr.AddOrIgnore(new Team { Name = "Team" + i, SteamID = i });
+            }
+
+            for (int i = 0; i < 4; i++) {
+                ur.AddOrIgnore(new User {
+                    Username = "User" + i,
+                    Password = "pw" + i,
+                    TeamId = (i % 2) + 1
+                });
+            }
+
+            for (int i = 0; i < 6; i++) {
+                dr.AddOrIgnore(new SaveData {
+                    SteamID = i % 2,
+                    TimeStamp = new DateTime((i % 2) + 1, ((i * i) % 12) + 1, ((i * 5) % 30) + 1),
+                    Profit = i * 100,
+                    CompanyValue = i * 200,
+                    DemandSatisfaction = i * 0.1d,
+                    MachineUptime = i * 0.15d,
+                    AbleToPayLoansBack = (i % 2) == 0,
+                    AveragePollution = i * 0.05
+                });
+            }
+        }
+
+        private void AddTestDataJoscha(TeamRepository tr, UserRepository ur) {
+            tr.AddOrIgnore(new Team { Name = "Joschas Team", SteamID = 76561198043632379 });
+            ur.AddOrIgnore(new User {
+                Username = "joscha",
+                Password = "pw",
+                TeamId = 1
             });
         }
     }

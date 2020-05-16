@@ -21,6 +21,7 @@ namespace PlanspielWeb
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("https://roi.jgdev.de:5001/");
                 });
     }
 }

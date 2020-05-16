@@ -1,6 +1,7 @@
 ﻿using DAL.Repositories;
 using Dapper;
 using Microsoft.Data.Sqlite;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace DAL.Models {
         public bool Admin { get; set; }
         public int? TeamId { get; set; }
 
+        [JsonIgnore]
         public Team Team => teamRepository.GetById(TeamId);
 
         public static void Setup(Database database, PasswordHasher pwHasher) {
@@ -29,11 +31,11 @@ namespace DAL.Models {
 [TeamId] INTEGER
 );");
 
-            var ur = new UserRepository(database);
+            var ur = new UserRepository(database, pwHasher);
             ur.AddOrIgnore(new User {
                 Id = 0,
                 Username = "root",
-                Password = pwHasher.Hash("root"),
+                Password = "root",
                 Admin = true
             });
         }

@@ -12,10 +12,9 @@ namespace Tester {
                 File.Delete("./test.sqlite");
 
             var db = new Database("./test.sqlite");
-            var ur = new UserRepository(db);
+            var ur = new UserRepository(db, db.PasswordHasher);
             var tr = new TeamRepository(db);
             var dr = new SaveDataRepository(db);
-            var pwHasher = new PasswordHasher();
 
             for (int i = 0; i < 2; i++) {
                 tr.AddOrIgnore(new Team { Name = "Team" + i, SteamID = i });
@@ -24,7 +23,7 @@ namespace Tester {
             for (int i = 0; i < 4; i++) {
                 ur.AddOrIgnore(new User {
                     Username = "User" + i,
-                    Password = pwHasher.Hash("pw" + i),
+                    Password = db.PasswordHasher.Hash("pw" + i),
                     TeamId = (i % 2) + 1
                 });
             }

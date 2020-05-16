@@ -1,8 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Wilkommen";
+    ViewData["current"] = "welcome";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Wilkommen</h1>
+    <h3>Zum Planspiel mit Rise of Industry</h3>
+    <br />
+    @if (Context.Session.TryGet<DAL.Models.User>("user", out var user)) {
+        <h4>Hallo @user.Username</h4>
+    }
 </div>

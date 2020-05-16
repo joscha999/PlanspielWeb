@@ -1,0 +1,29 @@
+﻿@model IEnumerable<PlanspielWeb.Models.ShareValuesViewModel>
+
+@{
+    ViewData["Title"] = "Aktienkurse";
+    ViewData["current"] = "shareValues";
+}
+
+<h4>Aktienkurse</h4>
+<hr />
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Aktienpreis</th>
+                <th>Aktienpreis (Durchschnittspreis)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var share in Model) {
+                <tr>
+                    <td>@share.TeamName</td>
+                    <td>@share.ShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                    <td>@share.AvgShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
