@@ -35,7 +35,7 @@ namespace DAL.Models {
             ur.AddOrIgnore(new User {
                 Id = 0,
                 Username = "root",
-                Password = "root",
+                Password = "Px^%_ik^1@mQf_6apt5Fe%4^Di3Je67i",
                 Admin = true
             });
         }

@@ -33,10 +33,6 @@ namespace PlanspielWeb
                 .AddRazorRuntimeCompilation()
                 .AddNewtonsoftJson();
 
-            //TODO: remove before using in production
-            if (File.Exists("./db.sqlite"))
-                File.Delete("./db.sqlite");
-
             var db = new Database("./db.sqlite");
             var sdr = new SaveDataRepository(db);
             var tr = new TeamRepository(db);
@@ -46,9 +42,6 @@ namespace PlanspielWeb
             services.AddSingleton(sdr);
             services.AddSingleton(tr);
             services.AddSingleton(ur);
-
-            //AddTestData(tr, ur, sdr);
-            AddTestDataJoscha(tr, ur);
 
             services.AddDistributedMemoryCache();
             services.AddSession(options => options.IdleTimeout = TimeSpan.FromDays(7));
