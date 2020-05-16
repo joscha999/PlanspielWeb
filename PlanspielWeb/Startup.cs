@@ -66,8 +66,6 @@ namespace PlanspielWeb
                 });
 
                 app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-                app.UseHttpsRedirection();
             }
 
             app.UseStaticFiles();
