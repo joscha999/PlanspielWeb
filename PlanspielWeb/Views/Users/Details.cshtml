@@ -35,7 +35,7 @@
             @if (Model.TeamId == null) {
                 <span>None</span>
             } else {
-                <a href="/Teams/Details/@Model.TeamId">@Html.DisplayFor(model => model.Team.Name)</a>
+                <a href="/Teams/Details/@Model.TeamId">@(Model.Team?.Name ?? "N/A")</a>
             }
         </dd>
     </dl>

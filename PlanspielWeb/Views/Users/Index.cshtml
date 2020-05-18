@@ -38,7 +38,7 @@
                 @if (item.TeamId == null) {
                     <span>None</span>
                 } else {
-                    <a href="/Teams/Details/@item.TeamId">@item.Team.Name</a>
+                    <a href="/Teams/Details/@item.TeamId">@(item.Team?.Name ?? "N/A")</a>
                 }
             </td>
             <td>
