@@ -1,12 +1,12 @@
-﻿{
+{
   "profiles": {
     "PlanspielWeb": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://roi.jgdev.de:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://roi.jgdev.de:5001"
     }
   }
 }

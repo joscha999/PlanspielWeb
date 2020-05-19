@@ -113,5 +113,17 @@ namespace PlanspielWeb.Controllers
             saveData.Delete(id);
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult DeleteFromTeam(int? id, int? teamId) {
+            if (id == null)
+                return NotFound();
+
+            saveData.Delete(id.Value);
+
+            if (teamId == null)
+                return View(nameof(Index));
+
+            return RedirectToAction("Details", "Teams", new { id = teamId });
+        }
     }
 }
