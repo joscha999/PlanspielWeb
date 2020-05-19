@@ -36,17 +36,19 @@ namespace PlanspielWeb.Controllers {
             var shareValues = new List<ShareValuesViewModel>();
 
             foreach (var team in teams.GetAll()) {
-                if (!team.Data.Any())
+                if (team.Data == null || !team.Data.Any())
                     continue;
 
+                var lastData = team.Data.LastOrDefault();
                 shareValues.Add(new ShareValuesViewModel {
                     TeamName = team.Name,
-                    ShareValue = team.Data.LastOrDefault()?.ShareValue ?? 0,
-                    AvgShareValue = team.Data.Average(d => d.ShareValue)
+                    ShareValue = lastData?.ShareValue ?? 0,
+                    AvgShareValue = team.Data.Average(d => d.ShareValue),
+                    TimeStamp = lastData?.IngameDate
                 });
             }
 
-            return View(shareValues.OrderBy(s => s.ShareValue));
+            return View(shareValues.OrderByDescending(s => s.ShareValue));
         }
     }
 }

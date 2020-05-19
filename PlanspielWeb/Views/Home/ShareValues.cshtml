@@ -14,6 +14,7 @@
                 <th>Team</th>
                 <th>Aktienpreis</th>
                 <th>Aktienpreis (Durchschnittspreis)</th>
+                <th>DateTime (last transmission)</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,7 @@
                     <td>@share.TeamName</td>
                     <td>@share.ShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
                     <td>@share.AvgShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                    <td>@share.TimeStamp</td>
                 </tr>
             }
         </tbody>

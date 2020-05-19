@@ -8,5 +8,6 @@ namespace PlanspielWeb.Models {
 		public string TeamName { get; set; }
 		public double ShareValue { get; set; }
 		public double AvgShareValue { get; set; }
+		public string TimeStamp { get; set; }
 	}
 }
