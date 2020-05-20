@@ -48,7 +48,7 @@ namespace PlanspielWeb.Controllers {
                 });
             }
 
-            return View(shareValues.OrderByDescending(s => s.ShareValue));
+            return View(shareValues.OrderByDescending(s => s.AvgShareValue));
         }
     }
 }
