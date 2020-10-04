@@ -7,20 +7,15 @@ using DAL.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using PlanspielWeb.Models;
 
-namespace PlanspielWeb.Controllers
-{
-    public class LoginController : AppController
-    {
+namespace PlanspielWeb.Controllers {
+    public class LoginController : AppController {
         private readonly UserRepository users;
 
         public LoginController(UserRepository userRepository) {
             users = userRepository;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public IActionResult Index() => View();
 
         [HttpPost]
         [ValidateAntiForgeryToken]

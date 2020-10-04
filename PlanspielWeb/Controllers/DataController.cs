@@ -13,7 +13,6 @@ namespace PlanspielWeb.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class DataController : ControllerBase {
-        // POST: api/Data
         [HttpPost]
         public void Post([FromBody] SaveDataModel data) {
             if (data == null)
