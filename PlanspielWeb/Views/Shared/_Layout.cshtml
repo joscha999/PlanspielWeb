@@ -13,16 +13,16 @@
             <div class="navbar-collapse collapse w-25 order-1 order-md-0 dual-collapse2">
                 @if (Context.Session.TryGet<DAL.Models.User>("user", out var user) && user.Admin) {
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item @(ViewData["current"] == "users" ? "active" : "")">
+                        <li class="nav-item @((string)ViewData["current"] == "users" ? "active" : "")">
                             <a class="nav-link" asp-controller="Users" asp-action="Index">Users</a>
                         </li>
-                        <li class="nav-item @(ViewData["current"] == "teams" ? "active" : "")">
+                        <li class="nav-item @((string)ViewData["current"] == "teams" ? "active" : "")">
                             <a class="nav-link" asp-controller="Teams" asp-action="Index">Teams</a>
                         </li>
-                        <li class="nav-item @(ViewData["current"] == "saveData" ? "active" : "")">
+                        <li class="nav-item @((string)ViewData["current"] == "saveData" ? "active" : "")">
                             <a class="nav-link" asp-controller="SaveDatas" asp-action="Index">Save Data</a>
                         </li>
-                        <li class="nav-item @(ViewData["current"] == "shareValues" ? "active" : "")">
+                        <li class="nav-item @((string)ViewData["current"] == "shareValues" ? "active" : "")">
                             <a class="nav-link" asp-controller="Home" asp-action="ShareValues">Shares</a>
                         </li>
                     </ul>
@@ -38,7 +38,7 @@
                 <ul class="navbar-nav ml-auto">
                     @if (user != null) {
                         @if (user.TeamId != null) {
-                            <li class="nav-item @(ViewData["current"] == "myTeam" ? "active" : "")">
+                            <li class="nav-item @((string)ViewData["current"] == "myTeam" ? "active" : "")">
                                 <a class="nav-link" asp-controller="Teams" asp-action="Details" asp-route-id="@user.TeamId">Mein Team</a>
                             </li>
                         }
@@ -46,7 +46,7 @@
                             <a class="nav-link" asp-controller="Login" asp-action="Logout">Logout</a>
                         </li>
                     } else {
-                        <li class="nav-item @(ViewData["current"] == "login" ? "active" : "")">
+                        <li class="nav-item @((string)ViewData["current"] == "login" ? "active" : "")">
                             <a class="nav-link" asp-controller="Login" asp-action="Index">Login</a>
                         </li>
                     }
