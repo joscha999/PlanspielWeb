@@ -20,13 +20,16 @@ namespace PlanspielWeb.Controllers {
 
             new SaveDataRepository(Database.Instance).AddOrIgnore(new SaveData {
                 SteamID = data.SteamID,
-                TimeStamp = data.TimeStamp,
+                Date = data.Date,
                 Profit = data.Profit,
                 CompanyValue = data.CompanyValue,
                 DemandSatisfaction = data.DemandSatisfaction,
                 MachineUptime = double.IsNaN(data.MachineUptime) ? 1 : data.MachineUptime,
                 AbleToPayLoansBack = data.AbleToPayLoansBack,
-                AveragePollution = double.IsNaN(data.AveragePollution) ? 0 : data.AveragePollution
+                AveragePollution = double.IsNaN(data.AveragePollution) ? 0 : data.AveragePollution,
+                BuildingCount = data.BuildingCount,
+                UnlockedResearchCount = data.UnlockedResearchCount,
+                RegionCount = data.RegionCount
             });
         }
     }

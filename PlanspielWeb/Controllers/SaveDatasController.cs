@@ -2,6 +2,7 @@
 using DAL.Models;
 using DAL.Repositories;
 using PlanspielWeb.Attributes;
+using Planspiel.Models;
 
 namespace PlanspielWeb.Controllers {
     [AdminOnly]
@@ -32,9 +33,11 @@ namespace PlanspielWeb.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,SteamID,TimeStamp,Profit,CompanyValue,DemandSatisfaction,MachineUptime,AbleToPayLoansBack,AveragePollution")] SaveData data) {
+        public IActionResult Create([Bind("Id,SteamID,TimeStamp,Profit,CompanyValue,DemandSatisfaction," +
+            "MachineUptime,AbleToPayLoansBack,AveragePollution,BuildingCount,UnlockedResearchCount,RegionCount," +
+            "Day,Month,Year")] SaveDataCreate data) {
             if (ModelState.IsValid) {
-                saveData.AddOrIgnore(data);
+                saveData.AddOrIgnore(SaveData.FromCreate(data));
                 return RedirectToAction(nameof(Index));
             }
 
@@ -49,17 +52,19 @@ namespace PlanspielWeb.Controllers {
             if (data == null)
                 return NotFound();
 
-            return View(data);
+            return View(SaveDataCreate.FromSaveData(data));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int? id, [Bind("Id,SteamID,TimeStamp,Profit,CompanyValue,DemandSatisfaction,MachineUptime,AbleToPayLoansBack,AveragePollution")] SaveData data) {
+        public IActionResult Edit(int? id, [Bind("Id,SteamID,TimeStamp,Profit,CompanyValue,DemandSatisfaction," +
+            "MachineUptime,AbleToPayLoansBack,AveragePollution,BuildingCount,UnlockedResearchCount,RegionCount," +
+            "Day,Month,Year")] SaveDataCreate data) {
             if (id != data.Id)
                 return NotFound();
 
             if (ModelState.IsValid) {
-                saveData.Update(data);
+                saveData.Update(SaveData.FromCreate(data));
                 return RedirectToAction(nameof(Index));
             }
             return View(data);

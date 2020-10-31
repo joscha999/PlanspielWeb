@@ -1,4 +1,4 @@
-﻿@model DAL.Models.SaveData
+﻿@model DAL.Models.SaveDataCreate
 
 @{
     ViewData["Title"] = "Edit";
@@ -8,57 +8,76 @@
 
 <h4>SaveData</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="SteamID" class="control-label"></label>
-                <input asp-for="SteamID" class="form-control" />
-                <span asp-validation-for="SteamID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TimeStamp" class="control-label"></label>
-                <input asp-for="TimeStamp" class="form-control" />
-                <span asp-validation-for="TimeStamp" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Profit" class="control-label"></label>
-                <input asp-for="Profit" class="form-control" />
-                <span asp-validation-for="Profit" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CompanyValue" class="control-label"></label>
-                <input asp-for="CompanyValue" class="form-control" />
-                <span asp-validation-for="CompanyValue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DemandSatisfaction" class="control-label"></label>
-                <input asp-for="DemandSatisfaction" class="form-control" />
-                <span asp-validation-for="DemandSatisfaction" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MachineUptime" class="control-label"></label>
-                <input asp-for="MachineUptime" class="form-control" />
-                <span asp-validation-for="MachineUptime" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="AbleToPayLoansBack" /> @Html.DisplayNameFor(model => model.AbleToPayLoansBack)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="AveragePollution" class="control-label"></label>
-                <input asp-for="AveragePollution" class="form-control" />
-                <span asp-validation-for="AveragePollution" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="form-control col-md-6"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group row">
+        <label asp-for="SteamID" class="control-label col-md-2"></label>
+        <input asp-for="SteamID" class="form-control col-md-6" />
+        <span asp-validation-for="SteamID" class="col-md-10 offset-md-2"></span>
     </div>
-</div>
+    <div class="form-group row">
+        <label for="Date" class="control-label col-md-2">Day/Month/Year</label>
+        <div class="col-md-2" style="padding: 0; padding-right: 7px;"><input asp-for="Day" class="form-control" /></div>
+        <div class="col-md-2" style="padding: 0; padding-left: 3.5px; padding-right: 3.5px;"><input asp-for="Month" class="form-control" /></div>
+        <div class="col-md-2" style="padding: 0; padding-left: 7px"><input asp-for="Year" class="form-control" /></div>
+        <div class="col-md-4"></div>
+
+        <span asp-validation-for="Day" class="col-md-2 offset-md-2"></span>
+        <span asp-validation-for="Month" class="col-md-2"></span>
+        <span asp-validation-for="Year" class="col-md-2"></span>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Profit" class="control-label col-md-2"></label>
+        <input asp-for="Profit" class="form-control col-md-6" />
+        <span asp-validation-for="Profit" class="col-md-10 offset-md-2"></span>
+    </div>
+    <div class="form-group row">
+        <label asp-for="CompanyValue" class="control-label col-md-2"></label>
+        <input asp-for="CompanyValue" class="form-control col-md-6" />
+        <span asp-validation-for="CompanyValue" class="col-md-10 offset-md-2"></span>
+    </div>
+    <div class="form-group row">
+        <label asp-for="DemandSatisfaction" class="control-label col-md-2"></label>
+        <input asp-for="DemandSatisfaction" class="form-control col-md-6" />
+        <span asp-validation-for="DemandSatisfaction" class="col-md-10 offset-md-2"></span>
+    </div>
+    <div class="form-group row">
+        <label asp-for="MachineUptime" class="control-label col-md-2"></label>
+        <input asp-for="MachineUptime" class="form-control col-md-6" />
+        <span asp-validation-for="MachineUptime" class="col-md-10 offset-md-2"></span>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.AbleToPayLoansBack)</label>
+        <div>
+            <input class="form-control col-md-6" asp-for="AbleToPayLoansBack" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="AveragePollution" class="control-label col-md-2"></label>
+        <input asp-for="AveragePollution" class="form-control col-md-6" />
+        <span asp-validation-for="AveragePollution" class="col-md-10 offset-md-2"></span>
+    </div>
+    <div class="form-group row">
+        <label asp-for="BuildingCount" class="control-label col-md-2"></label>
+        <input asp-for="BuildingCount" class="form-control col-md-6" />
+        <span asp-validation-for="BuildingCount" class="col-md-10 offset-md-2"></span>
+    </div>
+    <div class="form-group row">
+        <label asp-for="UnlockedResearchCount" class="control-label col-md-2"></label>
+        <input asp-for="UnlockedResearchCount" class="form-control col-md-6" />
+        <span asp-validation-for="UnlockedResearchCount" class="col-md-10 offset-md-2"></span>
+    </div>
+    <div class="form-group row">
+        <label asp-for="RegionCount" class="control-label col-md-2"></label>
+        <input asp-for="RegionCount" class="form-control col-md-6" />
+        <span asp-validation-for="RegionCount" class="col-md-10 offset-md-2"></span>
+    </div>
+    <div class="form-group row">
+        <input type="submit" value="Save" class="btn btn-primary col-md-2 offset-md-2" />
+    </div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>

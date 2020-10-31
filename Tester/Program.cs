@@ -4,6 +4,7 @@ using System;
 using DAL.Models;
 using System.IO;
 using Newtonsoft.Json;
+using Planspiel.Models;
 
 namespace Tester {
     public static class Program {
@@ -31,7 +32,7 @@ namespace Tester {
             for (int i = 0; i < 6; i++) {
                 dr.AddOrIgnore(new SaveData {
                     SteamID = i % 2,
-                    TimeStamp = DateTime.Now,
+                    Date = new Date(0, 0, 0),
                     Profit = i * 100,
                     CompanyValue = i * 200,
                     DemandSatisfaction = i * 0.1d,

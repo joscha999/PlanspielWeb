@@ -65,28 +65,34 @@
 
                 @if (user != null && user.Admin) {
                     <th>Share Price</th>
+                    <th>#Buildings</th>
+                    <th>#UnlockedResearchs</th>
+                    <th>#Regions</th>
                     <th>Actions</th>
                 }
             </tr>
         </thead>
         <tbody>
             @foreach (var data in Model.Data) {
-                <tr>
-                    <td>@data.IngameDate</td>
-                    <td>@data.Profit.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
-                    <td>@data.CompanyValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
-                    @*<td>@data.DemandSatisfaction</td>*@
-                    <td>@data.MachineUptime.ToString("P2")</td>
-                    <td>@data.AveragePollution.ToString("P2")</td>
+            <tr>
+                <td>@data.IngameDate</td>
+                <td>@data.Profit.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                <td>@data.CompanyValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                @*<td>@data.DemandSatisfaction</td>*@
+                <td>@data.MachineUptime.ToString("P2")</td>
+                <td>@data.AveragePollution.ToString("P2")</td>
 
-                    @if (user != null && user.Admin) {
-                        <td>@data.ShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
-                        <td>
-                            <a asp-controller="SaveDatas" asp-action="DeleteFromTeam"
-                               asp-route-id="@data.Id" asp-route-teamId="@Model.Id">Delete</a>
-                        </td>
-                    }
-                </tr>
+                @if (user != null && user.Admin) {
+                    <td>@data.ShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                    <td>@data.BuildingCount</td>
+                    <td>@data.UnlockedResearchCount</td>
+                    <td>@data.RegionCount</td>
+                    <td>
+                        <a asp-controller="SaveDatas" asp-action="DeleteFromTeam"
+                           asp-route-id="@data.Id" asp-route-teamId="@Model.Id">Delete</a>
+                    </td>
+                }
+            </tr>
             }
         </tbody>
     </table>

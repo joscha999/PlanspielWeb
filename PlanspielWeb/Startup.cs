@@ -14,21 +14,18 @@ using DAL.Repositories;
 using System.IO;
 using DAL.Models;
 using Microsoft.AspNetCore.HttpOverrides;
+using Planspiel.Models;
 
-namespace PlanspielWeb
-{
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
+namespace PlanspielWeb {
+    public class Startup {
+        public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) {
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation()
                 .AddNewtonsoftJson();
@@ -37,6 +34,8 @@ namespace PlanspielWeb
             var sdr = new SaveDataRepository(db);
             var tr = new TeamRepository(db);
             var ur = new UserRepository(db, db.PasswordHasher);
+
+            //AddTestData(tr, ur, sdr);
 
             services.AddSingleton(db);
             services.AddSingleton(sdr);
@@ -48,8 +47,7 @@ namespace PlanspielWeb
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
@@ -66,15 +64,14 @@ namespace PlanspielWeb
 
             app.UseSession();
 
-            app.UseEndpoints(endpoints =>
-            {
+            app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
 
-        private void AddTestData(TeamRepository tr, UserRepository ur, SaveDataRepository dr) {
+        private void AddTestData(TeamRepository tr, UserRepository ur, SaveDataRepository sdr) {
             for (int i = 0; i < 2; i++) {
                 tr.AddOrIgnore(new Team { Name = "Team" + i, SteamID = i });
             }
@@ -88,15 +85,18 @@ namespace PlanspielWeb
             }
 
             for (int i = 0; i < 6; i++) {
-                dr.AddOrIgnore(new SaveData {
+                sdr.AddOrIgnore(new SaveData {
                     SteamID = i % 2,
-                    TimeStamp = new DateTime((i % 2) + 1, ((i * i) % 12) + 1, ((i * 5) % 30) + 1),
+                    Date = new Date(((i * 5) % 30) + 1, ((i * i) % 12) + 1, (i % 2) + 1),
                     Profit = i * 100,
                     CompanyValue = i * 200,
                     DemandSatisfaction = i * 0.1d,
                     MachineUptime = i * 0.15d,
                     AbleToPayLoansBack = (i % 2) == 0,
-                    AveragePollution = i * 0.05
+                    AveragePollution = i * 0.05,
+                    BuildingCount = i * 5,
+                    RegionCount = i % 2,
+                    UnlockedResearchCount = (i * 10)
                 });
             }
         }

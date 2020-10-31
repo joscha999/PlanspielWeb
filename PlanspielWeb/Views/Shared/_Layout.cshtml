@@ -55,7 +55,7 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container-fluid">
         @if (TempData.TryGet<List<AlertViewModel>>("alerts", out var alerts)) {
             @foreach (var alert in alerts) {
                 <div class="alert @alert.CssClass">

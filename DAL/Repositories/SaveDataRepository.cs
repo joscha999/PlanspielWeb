@@ -32,18 +32,23 @@ namespace DAL.Repositories {
             EnsureOpen();
 
             Database.Connection.Execute(@"INSERT OR IGNORE INTO
-SaveData(Id, SteamID, TimeStamp, Profit, CompanyValue, DemandSatisfaction, MachineUptime, AbleToPayLoansBack, AveragePollution)
-Values(@id, @steamId, @timeStamp, @profit, @companyValue, @demand, @machineUptime, @loan, @pollution);",
+SaveData(Id, SteamID, SaveDataDate, Profit, CompanyValue, DemandSatisfaction, MachineUptime, 
+AbleToPayLoansBack, AveragePollution, BuildingCount, UnlockedResearchCount, RegionCount)
+Values(@id, @steamId, @timeStamp, @profit, @companyValue, @demand, @machineUptime, 
+@loan, @pollution, @buildingCount, @unlockedResearch, @regionCount);",
                 new {
                     id = data.Id,
                     steamId = data.SteamID,
-                    timeStamp = data.TimeStamp,
+                    timeStamp = data.SaveDataDate,
                     profit = data.Profit,
                     companyValue = data.CompanyValue,
                     demand = data.DemandSatisfaction,
                     machineUptime = data.MachineUptime,
                     loan = data.AbleToPayLoansBack,
-                    pollution = data.AveragePollution
+                    pollution = data.AveragePollution,
+                    buildingCount = data.BuildingCount,
+                    unlockedResearch = data.UnlockedResearchCount,
+                    regionCount = data.UnlockedResearchCount
                 });
         }
 
@@ -51,19 +56,23 @@ Values(@id, @steamId, @timeStamp, @profit, @companyValue, @demand, @machineUptim
             EnsureOpen();
 
             Database.Connection.Execute(@"UPDATE SaveData SET
-Id = @id, SteamID = @steamId, TimeStamp = @timeStamp, Profit = @profit, CompanyValue = @companyValue,
-DemandSatisfaction = @demand, MachineUptime = @machineUptime, AbleToPayLoansBack = @load, AveragePollution = @pollution
+Id = @id, SteamID = @steamId, SaveDataDate = @timeStamp, Profit = @profit, CompanyValue = @companyValue,
+DemandSatisfaction = @demand, MachineUptime = @machineUptime, AbleToPayLoansBack = @loan, AveragePollution = @pollution, 
+BuildingCount = @buildingCount, UnlockedResearchCount = @researchCount, RegionCount = @regionCount
 WHERE Id = @id",
                 new {
                     id = data.Id,
                     steamId = data.SteamID,
-                    timeStamp = data.TimeStamp,
+                    timeStamp = data.SaveDataDate,
                     profit = data.Profit,
                     companyValue = data.CompanyValue,
                     demand = data.DemandSatisfaction,
                     machineUptime = data.MachineUptime,
                     loan = data.AbleToPayLoansBack,
-                    pollution = data.AveragePollution
+                    pollution = data.AveragePollution,
+                    buildingCount = data.BuildingCount,
+                    researchCount = data.UnlockedResearchCount,
+                    regionCount = data.UnlockedResearchCount
                 });
         }
 

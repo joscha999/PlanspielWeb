@@ -7,7 +7,7 @@ namespace Planspiel.Models {
         /// <summary>
         /// Game time at which this save data was created.
         /// </summary>
-        public DateTime TimeStamp { get; set; }
+        public Date Date { get; set; }
 
         public double Profit { get; set; }
 
@@ -23,5 +23,11 @@ namespace Planspiel.Models {
         public bool AbleToPayLoansBack { get; set; }
 
         public double AveragePollution { get; set; }
+
+        public int BuildingCount { get; set; }
+
+        public int UnlockedResearchCount { get; set; }
+
+        public int RegionCount { get; set; }
     }
 }
