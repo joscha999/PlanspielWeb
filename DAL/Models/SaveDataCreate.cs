@@ -15,6 +15,7 @@ namespace DAL.Models {
         public int BuildingCount { get; set; }
         public int UnlockedResearchCount { get; set; }
         public int RegionCount { get; set; }
+        public double ShareValue { get; set; }
 
         public int Day { get; set; }
         public int Month { get; set; }
@@ -35,7 +36,8 @@ namespace DAL.Models {
                 RegionCount = sd.RegionCount,
                 Day = sd.Date.Day,
                 Month = sd.Date.Month,
-                Year = sd.Date.Year
+                Year = sd.Date.Year,
+                ShareValue = sd.ShareValue
             };
         }
     }

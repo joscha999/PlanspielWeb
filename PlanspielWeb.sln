@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tester", "Tester\Tester.csproj", "{C9C1E1B9-67BE-44DE-A28D-C440D372B0C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Planspiel.Models", "Planspiel.Models\Planspiel.Models.csproj", "{39EEFF5B-05F1-4769-94FB-297AD633CFC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Planspiel.Models", "Planspiel.Models\Planspiel.Models.csproj", "{39EEFF5B-05F1-4769-94FB-297AD633CFC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareCalculationSystem", "ShareCalculationSystem\ShareCalculationSystem.csproj", "{16E84C4F-1433-449C-8111-767B68241308}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{39EEFF5B-05F1-4769-94FB-297AD633CFC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39EEFF5B-05F1-4769-94FB-297AD633CFC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39EEFF5B-05F1-4769-94FB-297AD633CFC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16E84C4F-1433-449C-8111-767B68241308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16E84C4F-1433-449C-8111-767B68241308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16E84C4F-1433-449C-8111-767B68241308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16E84C4F-1433-449C-8111-767B68241308}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

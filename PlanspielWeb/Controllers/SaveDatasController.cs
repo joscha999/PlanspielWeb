@@ -59,7 +59,7 @@ namespace PlanspielWeb.Controllers {
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int? id, [Bind("Id,SteamID,TimeStamp,Profit,CompanyValue,DemandSatisfaction," +
             "MachineUptime,AbleToPayLoansBack,AveragePollution,BuildingCount,UnlockedResearchCount,RegionCount," +
-            "Day,Month,Year")] SaveDataCreate data) {
+            "Day,Month,Year,ShareValue")] SaveDataCreate data) {
             if (id != data.Id)
                 return NotFound();
 

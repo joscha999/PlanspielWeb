@@ -1,5 +1,6 @@
 ﻿using DAL.Models;
 using Dapper;
+using Planspiel.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,18 +29,26 @@ namespace DAL.Repositories {
             return Database.Connection.Query<SaveData>("SELECT * FROM SaveData WHERE Id = @id", new { id }).FirstOrDefault();
         }
 
+        public IEnumerable<SaveData> GetPeriod(Date end, Date start) {
+            EnsureOpen();
+
+            return Database.Connection.Query<SaveData>(
+                "SELECT * FROM SaveData WHERE UnixDays >= @start AND UnixDays <= @end ORDER BY UnixDays",
+                new { start = start.UnixDays, end = end.UnixDays });
+        }
+
         public void AddOrIgnore(SaveData data) {
             EnsureOpen();
 
             Database.Connection.Execute(@"INSERT OR IGNORE INTO
-SaveData(Id, SteamID, SaveDataDate, Profit, CompanyValue, DemandSatisfaction, MachineUptime, 
+SaveData(Id, SteamID, UnixDays, Profit, CompanyValue, DemandSatisfaction, MachineUptime, 
 AbleToPayLoansBack, AveragePollution, BuildingCount, UnlockedResearchCount, RegionCount)
 Values(@id, @steamId, @timeStamp, @profit, @companyValue, @demand, @machineUptime, 
 @loan, @pollution, @buildingCount, @unlockedResearch, @regionCount);",
                 new {
                     id = data.Id,
                     steamId = data.SteamID,
-                    timeStamp = data.SaveDataDate,
+                    timeStamp = data.UnixDays,
                     profit = data.Profit,
                     companyValue = data.CompanyValue,
                     demand = data.DemandSatisfaction,
@@ -48,7 +57,7 @@ Values(@id, @steamId, @timeStamp, @profit, @companyValue, @demand, @machineUptim
                     pollution = data.AveragePollution,
                     buildingCount = data.BuildingCount,
                     unlockedResearch = data.UnlockedResearchCount,
-                    regionCount = data.UnlockedResearchCount
+                    regionCount = data.RegionCount
                 });
         }
 
@@ -56,14 +65,14 @@ Values(@id, @steamId, @timeStamp, @profit, @companyValue, @demand, @machineUptim
             EnsureOpen();
 
             Database.Connection.Execute(@"UPDATE SaveData SET
-Id = @id, SteamID = @steamId, SaveDataDate = @timeStamp, Profit = @profit, CompanyValue = @companyValue,
+Id = @id, SteamID = @steamId, UnixDays = @timeStamp, Profit = @profit, CompanyValue = @companyValue,
 DemandSatisfaction = @demand, MachineUptime = @machineUptime, AbleToPayLoansBack = @loan, AveragePollution = @pollution, 
 BuildingCount = @buildingCount, UnlockedResearchCount = @researchCount, RegionCount = @regionCount
 WHERE Id = @id",
                 new {
                     id = data.Id,
                     steamId = data.SteamID,
-                    timeStamp = data.SaveDataDate,
+                    timeStamp = data.UnixDays,
                     profit = data.Profit,
                     companyValue = data.CompanyValue,
                     demand = data.DemandSatisfaction,
@@ -72,7 +81,7 @@ WHERE Id = @id",
                     pollution = data.AveragePollution,
                     buildingCount = data.BuildingCount,
                     researchCount = data.UnlockedResearchCount,
-                    regionCount = data.UnlockedResearchCount
+                    regionCount = data.RegionCount
                 });
         }
 

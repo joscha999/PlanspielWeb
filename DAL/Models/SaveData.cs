@@ -3,6 +3,7 @@ using Dapper;
 using Dapper.Contrib.Extensions;
 using Newtonsoft.Json;
 using Planspiel.Models;
+using ShareCalculationSystem;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,17 +22,27 @@ namespace DAL.Models {
         public int UnlockedResearchCount { get; set; }
         public int RegionCount { get; set; }
 
-        public string SaveDataDate {
-            get => Date.ToDB();
-            set => Date = Date.FromDB(value);
+        private double _shareValue = -1;
+        public double ShareValue {
+            get {
+                if (_shareValue == -1)
+                    _shareValue = ShareRepository.Instance.Calculate(this);
+
+                return _shareValue;
+            }
+            set => _shareValue = value;
+        }
+
+        internal double InternalShareValue => _shareValue;
+
+        public int UnixDays {
+            get => Date.UnixDays;
+            set => Date = new Date(value);
         }
 
         [Write(false)]
         [JsonIgnore]
         public Date Date { get; set; }
-
-        [JsonIgnore]
-        public double ShareValue => ShareRepository.CalculateSharePrice(this);
 
         [JsonIgnore]
         public string IngameDate => Date.ToString();
@@ -49,7 +60,25 @@ namespace DAL.Models {
                 BuildingCount = sd.BuildingCount,
                 UnlockedResearchCount = sd.UnlockedResearchCount,
                 RegionCount = sd.RegionCount,
-                Date = new Date(sd.Day, sd.Month, sd.Year)
+                Date = new Date(sd.Day, sd.Month, sd.Year),
+                ShareValue = sd.ShareValue
+            };
+        }
+
+        public SaveDataModel ToModel() {
+            return new SaveDataModel {
+                AbleToPayLoansBack = AbleToPayLoansBack,
+                AveragePollution = AveragePollution,
+                BuildingCount = BuildingCount,
+                CompanyValue = CompanyValue,
+                Date = Date,
+                DemandSatisfaction = DemandSatisfaction,
+                MachineUptime = MachineUptime,
+                Profit = Profit,
+                RegionCount = RegionCount,
+                ShareValue = _shareValue,
+                SteamID = SteamID,
+                UnlockedResearchCount = UnlockedResearchCount
             };
         }
 
@@ -57,7 +86,7 @@ namespace DAL.Models {
             database.Connection.Execute(@"CREATE TABLE IF NOT EXISTS [SaveData] (
 [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 [SteamID] INTEGER NOT NULL,
-[SaveDataDate] TEXT NOT NULL,
+[UnixDays] INTEGER NOT NULL,
 [Profit] REAL NOT NULL,
 [CompanyValue] REAL NOT NULL,
 [DemandSatisfaction] REAL NOT NULL,

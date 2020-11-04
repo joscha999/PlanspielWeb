@@ -29,5 +29,7 @@ namespace Planspiel.Models {
         public int UnlockedResearchCount { get; set; }
 
         public int RegionCount { get; set; }
+
+        public double ShareValue { get; set; } = -1;
     }
 }
