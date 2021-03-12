@@ -49,19 +49,27 @@ namespace DAL.Repositories {
         public void AddOrIgnore(Team t) {
             EnsureOpen();
 
-            Database.Connection.Execute(@"INSERT OR IGNORE INTO
+			Database.Connection.Execute(@"INSERT OR IGNORE INTO
 Teams(Id, Name, SteamID)
 Values(@id, @name, @sid);",
-                new { id = t.Id, name = t.Name, sid = t.SteamID });
+				new {
+					id = t.Id,
+					name = t.Name,
+					sid = t.SteamID
+				});
         }
 
         public void Update(Team t) {
             EnsureOpen();
 
-            Database.Connection.Execute(@"UPDATE Teams SET
+			Database.Connection.Execute(@"UPDATE Teams SET
 Name = @name, SteamId = @sid
 WHERE Id = @id",
-                new { id = t.Id, name = t.Name, sid = t.SteamID });
+				new {
+					id = t.Id,
+					name = t.Name,
+					sid = t.SteamID
+				});
         }
 
         public void Delete(int? id) {

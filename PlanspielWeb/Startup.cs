@@ -35,6 +35,7 @@ namespace PlanspielWeb {
             var tr = new TeamRepository(db);
             var ur = new UserRepository(db, db.PasswordHasher);
             var sr = new ShareRepository(sdr);
+			var nr = new NewsRepository(db);
 
             //AddTestData(tr, ur, sdr);
 
@@ -43,6 +44,7 @@ namespace PlanspielWeb {
             services.AddSingleton(tr);
             services.AddSingleton(ur);
             services.AddSingleton(sr);
+			services.AddSingleton(nr);
 
             services.AddDistributedMemoryCache();
             services.AddSession(options => options.IdleTimeout = TimeSpan.FromDays(7));

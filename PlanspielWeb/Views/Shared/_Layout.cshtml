@@ -37,6 +37,9 @@
             <div class="navbar-collapse collapse w-25 order-3 dual-collapse2">
                 <ul class="navbar-nav ml-auto">
                     @if (user != null) {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="News" asp-action="Index">News</a>
+                        </li>
                         @if (user.TeamId != null) {
                             <li class="nav-item @((string)ViewData["current"] == "myTeam" ? "active" : "")">
                                 <a class="nav-link" asp-controller="Teams" asp-action="Details" asp-route-id="@user.TeamId">Mein Team</a>
@@ -55,7 +58,7 @@
         </nav>
     </header>
 
-    <div class="container-fluid">
+    <div class="@(ViewData["Container"] == null ? "container-fluid" : ViewData["Container"])">
         @if (TempData.TryGet<List<AlertViewModel>>("alerts", out var alerts)) {
             @foreach (var alert in alerts) {
                 <div class="alert @alert.CssClass">

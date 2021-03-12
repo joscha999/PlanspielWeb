@@ -27,6 +27,7 @@ namespace DAL {
             User.Setup(this, PasswordHasher);
             Team.Setup(this);
             SaveData.Setup(this);
+			News.Setup(this);
         }
     }
 }

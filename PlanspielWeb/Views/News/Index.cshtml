@@ -1,0 +1,37 @@
+﻿@model IEnumerable<DAL.Models.News>
+
+@{ 
+    ViewData["Title"] = "Nachrichten";
+    ViewData["Container"] = "container";
+}
+
+@if (Context.Session.TryGet<DAL.Models.User>("user", out var user) && user.Admin) {
+    <div class="card" style="margin-bottom: 25px;">
+        <div class="card-header text-muted">
+            <a asp-action="Create">Create new article</a>
+        </div>
+    </div>
+}
+
+@foreach (var news in Model) {
+    <div class="card" style="margin-bottom: 25px;">
+        @if (user != null && user.Admin) {
+            <div class="card-header text-muted">
+                <a asp-action="Edit" asp-route-id="@news.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@news.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@news.Id">Delete</a>
+            </div>
+        }
+        <div class="card-body">
+            <h3 class="card-title">
+                @news.Title
+            </h3>
+            <p class="card-text">
+                @news.Content
+            </p>
+        </div>
+        <div class="card-footer text-muted">
+            @news.RealDateTime
+        </div>
+    </div>
+}
