@@ -19,6 +19,14 @@ namespace DAL.Models {
 
 		public string PictureName { get; set; }
 
+		public int PageID { get; set; }
+
+		public int X { get; set; }
+		public int Y { get; set; }
+
+		public int Width { get; set; }
+		public int Height { get; set; }
+
 		public static void Setup(Database database) {
 			newsRepository = new NewsRepository(database);
 
@@ -27,7 +35,12 @@ namespace DAL.Models {
 [Title] NVARCHAR(255) NOT NULL,
 [Content] NVARCHAR(2048) NOT NULL,
 [RealDateTime] NVARCHAR(64) NOT NULL,
-[PictureName] NVARCHAR(255)
+[PictureName] NVARCHAR(255),
+[PageID] INTEGER NOT NULL,
+[X] INTEGER NOT NULL,
+[Y] INTEGER NOT NULL,
+[Width] INTEGER NOT NULL,
+[Height] INTEGER NOT NULL
 );");
 		}
 	}

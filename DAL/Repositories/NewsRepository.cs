@@ -43,14 +43,19 @@ namespace DAL.Repositories {
 			EnsureOpen();
 
 			Database.Connection.Execute(@"INSERT OR IGNORE INTO
-News(Id, Title, Content, RealDateTime, PictureName)
-Values(@id, @title, @content, @realDateTime, @pictureName);",
+News(Id, Title, Content, RealDateTime, PictureName, PageID, X, Y, Width, Height)
+Values(@id, @title, @content, @realDateTime, @pictureName, @pageID, @x, @y, @width, @height);",
 				new {
 					id = n.Id,
 					title = n.Title,
 					content = n.Content,
 					realDateTime = n.RealDateTime,
-					pictureName = n.PictureName
+					pictureName = n.PictureName,
+					pageID = n.PageID,
+					x = n.X,
+					y = n.Y,
+					width = n.Width,
+					height = n.Height
 				});
 		}
 
@@ -58,14 +63,20 @@ Values(@id, @title, @content, @realDateTime, @pictureName);",
 			EnsureOpen();
 
 			Database.Connection.Execute(@"UPDATE News SET
-Title = @title, Content = @content, RealDateTime = @realDateTime, PictureName = @pictureName
+Title = @title, Content = @content, RealDateTime = @realDateTime, PictureName = @pictureName,
+PageID = @pageID, X = @x, Y = @y, Width = @width, Height = @height
 WHERE Id = @id",
 				new {
 					id = n.Id,
 					title = n.Title,
 					content = n.Content,
 					realDateTime = n.RealDateTime,
-					pictureName = n.PictureName
+					pictureName = n.PictureName,
+					pageID = n.PageID,
+					x = n.X,
+					y = n.Y,
+					width = n.Width,
+					height = n.Height
 				});
 		}
 
