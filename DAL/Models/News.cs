@@ -21,6 +21,8 @@ namespace DAL.Models {
 
 		public int PageID { get; set; }
 
+		public bool Visible { get; set; }
+
 		public int X { get; set; }
 		public int Y { get; set; }
 
@@ -37,6 +39,7 @@ namespace DAL.Models {
 [RealDateTime] NVARCHAR(64) NOT NULL,
 [PictureName] NVARCHAR(255),
 [PageID] INTEGER NOT NULL,
+[Visible] INTEGER(1) NOT NULL,
 [X] INTEGER NOT NULL,
 [Y] INTEGER NOT NULL,
 [Width] INTEGER NOT NULL,

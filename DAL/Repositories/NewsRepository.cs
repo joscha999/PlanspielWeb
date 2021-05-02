@@ -22,13 +22,31 @@ namespace DAL.Repositories {
 				Database.Connection.Open();
 		}
 
-		public IEnumerable<News> GetAll() {
+		public IEnumerable<News> GetAllForPage(int pageID) {
 			EnsureOpen();
 
-			return Database.Connection.Query<News>("SELECT * FROM News;");
+			return Database.Connection.Query<News>("SELECT * FROM News WHERE PageID = @pageID;", new { pageID });
 		}
 
-		public IEnumerable<News> GetAllTimeOrdered() => GetAll().OrderByDescending(n => n.RealDateTime);
+		public int GetLatestPageID() {
+			EnsureOpen();
+
+			var result = Database.Connection.Query<News>("SELECT * FROM News ORDER BY PageID DESC LIMIT 1");
+			if (!result.Any())
+				return 0;
+
+			return result.First().PageID;
+		}
+
+		public bool DoesPageExist(int pageID) {
+			if (pageID < 0)
+				return false;
+
+			EnsureOpen();
+
+			return Database.Connection.ExecuteScalar<bool>(
+				"SELECT Count(1) FROM News WHERE PageID = @pageID", new { pageID });
+		}
 
 		public News GetById(int? id) {
 			if (id == null)
@@ -36,15 +54,16 @@ namespace DAL.Repositories {
 
 			EnsureOpen();
 
-			return Database.Connection.Query<News>("SELECT * FROM News WHERE Id = @id;", new { id }).FirstOrDefault();
+			return Database.Connection.Query<News>("SELECT * FROM News WHERE Id = @id;",
+				new { id }).FirstOrDefault();
 		}
 
 		public void AddOrIgnore(News n) {
 			EnsureOpen();
 
 			Database.Connection.Execute(@"INSERT OR IGNORE INTO
-News(Id, Title, Content, RealDateTime, PictureName, PageID, X, Y, Width, Height)
-Values(@id, @title, @content, @realDateTime, @pictureName, @pageID, @x, @y, @width, @height);",
+News(Id, Title, Content, RealDateTime, PictureName, PageID, Visible, X, Y, Width, Height)
+Values(@id, @title, @content, @realDateTime, @pictureName, @pageID, @visible, @x, @y, @width, @height);",
 				new {
 					id = n.Id,
 					title = n.Title,
@@ -52,6 +71,7 @@ Values(@id, @title, @content, @realDateTime, @pictureName, @pageID, @x, @y, @wid
 					realDateTime = n.RealDateTime,
 					pictureName = n.PictureName,
 					pageID = n.PageID,
+					visible = n.Visible,
 					x = n.X,
 					y = n.Y,
 					width = n.Width,
@@ -64,7 +84,7 @@ Values(@id, @title, @content, @realDateTime, @pictureName, @pageID, @x, @y, @wid
 
 			Database.Connection.Execute(@"UPDATE News SET
 Title = @title, Content = @content, RealDateTime = @realDateTime, PictureName = @pictureName,
-PageID = @pageID, X = @x, Y = @y, Width = @width, Height = @height
+PageID = @pageID, Visible = @visible, X = @x, Y = @y, Width = @width, Height = @height
 WHERE Id = @id",
 				new {
 					id = n.Id,
@@ -73,6 +93,7 @@ WHERE Id = @id",
 					realDateTime = n.RealDateTime,
 					pictureName = n.PictureName,
 					pageID = n.PageID,
+					visible = n.Visible,
 					x = n.X,
 					y = n.Y,
 					width = n.Width,

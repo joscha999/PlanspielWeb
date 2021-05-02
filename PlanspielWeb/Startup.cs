@@ -91,7 +91,7 @@ namespace PlanspielWeb {
             for (int i = 0; i < 6; i++) {
                 sdr.AddOrIgnore(new SaveData {
                     SteamID = i % 2,
-                    Date = new Date(((i * 5) % 30) + 1, ((i * i) % 12) + 1, (i % 2) + 1),
+                    Date = new Date((i * 5 % 30) + 1, (i * i % 12) + 1, (i % 2) + 1),
                     Profit = i * 100,
                     CompanyValue = i * 200,
                     DemandSatisfaction = i * 0.1d,

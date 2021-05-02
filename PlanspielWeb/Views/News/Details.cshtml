@@ -6,7 +6,7 @@
 
 <div>
     <hr />
-    <h4>Teamübersicht</h4>
+    <h4>News Details</h4>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
@@ -36,5 +36,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-id="@Model.PageID">Back to List</a>
 </div>

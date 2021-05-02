@@ -1,37 +1,77 @@
-﻿@model IEnumerable<DAL.Models.News>
+﻿@model NewsViewModel
 
-@{ 
+@{
     ViewData["Title"] = "Nachrichten";
-    ViewData["Container"] = "container";
+    ViewData["Container"] = "container-fluid";
 }
 
-@if (Context.Session.TryGet<DAL.Models.User>("user", out var user) && user.Admin) {
-    <div class="card" style="margin-bottom: 25px;">
-        <div class="card-header text-muted">
-            <a asp-action="Create">Create new article</a>
+<div class="card" style="margin-bottom: 25px;">
+    <div class="card-header">
+        <div style="float: left;">
+            @if (Model.CanGoPrevious) {
+                <a asp-action="Index" asp-route-id="@Model.PreviousPageID">
+                    <span>🡄</span>
+                </a>
+            }
+        </div>
+        <div style="float: right;">
+            @if (Model.CanGoNext) {
+                <a asp-action="Index" asp-route-id="@Model.NextPageID">
+                    <span class="text-right">🡆</span>
+                </a>
+            }
+        </div>
+        <div style="text-align: center;">
+            <span class="text-center">
+                Title
+                @if (Context.Session.TryGet<DAL.Models.User>("user", out var user) && user.Admin) {
+                    <span> - </span><a asp-action="Create">Create new Entry</a>
+                    <span> - </span><a asp-action="SetAllVisible" asp-route-id="@Model.PageID">Set all Visible</a>
+                }
+            </span>
         </div>
     </div>
-}
+</div>
 
-@foreach (var news in Model) {
-    <div class="card" style="margin-bottom: 25px;">
-        @if (user != null && user.Admin) {
-            <div class="card-header text-muted">
-                <a asp-action="Edit" asp-route-id="@news.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@news.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@news.Id">Delete</a>
+<style>
+    .gridContainer {
+        display: grid;
+        grid-template-areas: @Html.Raw(Model.GridLayout);
+
+        grid-auto-columns: calc(100% / @Model.GridWidth);
+        grid-auto-rows: 300px;
+
+        width: 100%;
+        height: 100%;
+    }
+
+    .gridItem {
+        padding: 10px;
+        border: 1px solid lightgray;
+    }
+</style>
+
+<div class="gridContainer">
+    @foreach (var kvp in Model.News) {
+        <div class="gridItem" style="grid-area: @kvp.Key;">
+            @if (user != null && user.Admin) {
+                <div class="card-header text-muted">
+                    <a asp-action="Edit" asp-route-id="@kvp.Value.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@kvp.Value.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@kvp.Value.Id">Delete</a>
+                </div>
+            }
+            <div class="card-body">
+                <h3 class="card-title">
+                    @if (!kvp.Value.Visible) {
+                        <span>[Hidden] </span>
+                    }
+                    @kvp.Value.Title
+                </h3>
+                <p class="card-text">
+                    @kvp.Value.Content
+                </p>
             </div>
-        }
-        <div class="card-body">
-            <h3 class="card-title">
-                @news.Title
-            </h3>
-            <p class="card-text">
-                @news.Content
-            </p>
         </div>
-        <div class="card-footer text-muted">
-            @news.RealDateTime
-        </div>
-    </div>
-}
+    }
+</div>

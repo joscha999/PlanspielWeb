@@ -33,6 +33,41 @@
                 <span asp-validation-for="PictureName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="PageID" class="control-label"></label>
+                <input asp-for="PageID" class="form-control" />
+                <span asp-validation-for="PageID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Visible" class="control-label"></label>
+                <input asp-for="Visible" class="form-control" />
+                <span asp-validation-for="Visible" class="text-danger"></span>
+            </div>
+
+            <label class="control-label">Position</label>
+            <div class="row form-inline">
+                <label asp-for="X" class="control-label col-2"></label>
+                <input asp-for="X" class="form-control col-4" />
+                <label asp-for="Y" class="control-label col-2"></label>
+                <input asp-for="Y" class="form-control col-4" />
+            </div>
+            <div class="row">
+                <span asp-validation-for="X" class="text-danger"></span>
+                <span asp-validation-for="Y" class="text-danger"></span>
+            </div>
+
+            <label class="control-label">Size</label>
+            <div class="row form-inline">
+                <label asp-for="Width" class="control-label col-2"></label>
+                <input asp-for="Width" class="form-control col-4" />
+                <label asp-for="Height" class="control-label col-2"></label>
+                <input asp-for="Height" class="form-control col-4" />
+            </div>
+            <div class="row">
+                <span asp-validation-for="Width" class="text-danger"></span>
+                <span asp-validation-for="Height" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
