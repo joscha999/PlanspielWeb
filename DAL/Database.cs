@@ -1,4 +1,6 @@
-﻿using DAL.Models;
+﻿using DAL.DapperTypeHandlers;
+using DAL.Models;
+using Dapper;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
@@ -23,11 +25,15 @@ namespace DAL {
             Connection = new SqliteConnection($"Data Source={dbPath};");
             Connection.Open();
 
+			SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
+
             //setup tables
             User.Setup(this, PasswordHasher);
             Team.Setup(this);
             SaveData.Setup(this);
 			News.Setup(this);
+			AssignmentAction.Setup(this);
+			AssignmentTask.Setup(this);
         }
     }
 }

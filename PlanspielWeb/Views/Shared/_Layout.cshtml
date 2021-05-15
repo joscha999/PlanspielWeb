@@ -25,6 +25,9 @@
                         <li class="nav-item @((string)ViewData["current"] == "shareValues" ? "active" : "")">
                             <a class="nav-link" asp-controller="Home" asp-action="ShareValues">Shares</a>
                         </li>
+                        <li class="nav-item @((string)ViewData["current"] == "tasks" ? "active" : "")">
+                            <a class="nav-link" asp-controller="Tasks" asp-action="Index">Task Management</a>
+                        </li>
                     </ul>
                 }
             </div>
