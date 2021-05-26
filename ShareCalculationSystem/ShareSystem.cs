@@ -22,7 +22,7 @@ namespace ShareCalculationSystem {
 
         public double Calculate(SaveDataModel current) {
             //get data
-            var data = DataCallback(current.Date, MaxRequiredData);
+            var data = DataCallback(new Date(current.UnixDays), MaxRequiredData);
 
             //calculate for all non calced
             var dataCount = data.Count();

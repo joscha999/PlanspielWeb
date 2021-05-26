@@ -19,7 +19,7 @@ namespace PlanspielWeb.Controllers {
 		/// Gets all tasks for and filters out actions that aren't supposed to exist for the specified group.
 		/// </summary>
 		[HttpGet]
-		public JsonResult Get(int groupSteamID) {
+		public JsonResult Get(long groupSteamID) {
 			return Json(tasks.GetAll(groupSteamID));
 		}
 	}

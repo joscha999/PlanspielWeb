@@ -20,10 +20,10 @@ namespace PlanspielWeb.Controllers {
 
             new SaveDataRepository(Database.Instance).AddOrIgnore(new SaveData {
                 SteamID = data.SteamID,
-                Date = data.Date,
+                Date = new Date(data.UnixDays),
                 Profit = data.Profit,
                 CompanyValue = data.CompanyValue,
-                DemandSatisfaction = data.DemandSatisfaction,
+                //DemandSatisfaction = data.DemandSatisfaction,
                 MachineUptime = double.IsNaN(data.MachineUptime) ? 1 : data.MachineUptime,
                 AbleToPayLoansBack = data.AbleToPayLoansBack,
                 AveragePollution = double.IsNaN(data.AveragePollution) ? 0 : data.AveragePollution,

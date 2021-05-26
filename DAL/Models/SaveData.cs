@@ -25,6 +25,8 @@ namespace DAL.Models {
         private double _shareValue = -1;
         public double ShareValue {
             get {
+				return -1;
+
                 if (_shareValue == -1)
                     _shareValue = ShareRepository.Instance.Calculate(this);
 
@@ -66,13 +68,13 @@ namespace DAL.Models {
         }
 
         public SaveDataModel ToModel() {
-            return new SaveDataModel {
-                AbleToPayLoansBack = AbleToPayLoansBack,
-                AveragePollution = AveragePollution,
-                BuildingCount = BuildingCount,
-                CompanyValue = CompanyValue,
-                Date = Date,
-                DemandSatisfaction = DemandSatisfaction,
+			return new SaveDataModel {
+				AbleToPayLoansBack = AbleToPayLoansBack,
+				AveragePollution = AveragePollution,
+				BuildingCount = BuildingCount,
+				CompanyValue = CompanyValue,
+				UnixDays = UnixDays,
+                //DemandSatisfaction = DemandSatisfaction,
                 MachineUptime = MachineUptime,
                 Profit = Profit,
                 RegionCount = RegionCount,

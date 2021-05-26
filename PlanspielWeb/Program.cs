@@ -9,9 +9,11 @@ using Microsoft.Extensions.Logging;
 
 namespace PlanspielWeb
 {
-    public class Program
+    public static class Program
     {
-        public static void Main(string[] args)
+		//https://www.c-sharpcorner.com/article/creating-charts-with-asp-net-core/
+
+		public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
@@ -21,7 +23,7 @@ namespace PlanspielWeb
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://roi.jgdev.de:5001/");
+                    webBuilder.UseUrls("http://192.168.178.23:5001/", "http://roi.jgdev.de:5001/");
                 });
     }
 }

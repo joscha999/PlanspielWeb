@@ -23,6 +23,11 @@
                 <span asp-validation-for="UTCStart" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Enabled" class="control-label"></label>
+                <input asp-for="Enabled" class="form-control" />
+                <span asp-validation-for="Enabled" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

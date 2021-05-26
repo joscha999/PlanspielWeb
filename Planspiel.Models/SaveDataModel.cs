@@ -7,13 +7,13 @@ namespace Planspiel.Models {
         /// <summary>
         /// Game time at which this save data was created.
         /// </summary>
-        public Date Date { get; set; }
+        public int UnixDays { get; set; }
 
         public double Profit { get; set; }
 
         public double CompanyValue { get; set; }
 
-        public double DemandSatisfaction { get; set; }
+        //public double DemandSatisfaction { get; set; }
 
         /// <summary>
         /// Average machine uptime.

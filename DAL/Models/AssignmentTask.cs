@@ -16,6 +16,8 @@ namespace DAL.Models {
 
 		public DateTimeOffset UTCStart { get; set; }
 
+		public bool Enabled { get; set; }
+
 		/// <summary>
 		/// List of Actions on this Task, not stored in DB explicitly but always queried!
 		/// </summary>
@@ -26,7 +28,8 @@ namespace DAL.Models {
 			database.Connection.Execute(@"CREATE TABLE IF NOT EXISTS [AssignmentTasks] (
 [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 [Name] NVARCHAR(128) NOT NULL,
-[UTCStart] INTEGER
+[UTCStart] INTEGER,
+[Enabled] INTEGER
 );");
 		}
 	}

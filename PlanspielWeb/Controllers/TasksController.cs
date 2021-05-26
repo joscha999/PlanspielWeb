@@ -18,7 +18,7 @@ namespace PlanspielWeb.Controllers {
 			tasks = tr;
 		}
 
-		public IActionResult Index() => View(tasks.GetAll(-2));
+		public IActionResult Index() => View(tasks.GetAll(-2, true));
 
 		public IActionResult Details(int? id) {
 			if (id == null)
@@ -35,7 +35,7 @@ namespace PlanspielWeb.Controllers {
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult CreateTask([Bind("ID, Name, UTCStart, Actions")] AssignmentTask task) {
+		public IActionResult CreateTask([Bind("ID, Name, UTCStart, Actions, Enabled")] AssignmentTask task) {
 			if (ModelState.IsValid) {
 				tasks.AddOrIgnore(task);
 				return RedirectToAction(nameof(Index));
@@ -74,7 +74,7 @@ namespace PlanspielWeb.Controllers {
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult EditTask([Bind("ID, Name, UTCStart, Actions")] AssignmentTask task) {
+		public IActionResult EditTask([Bind("ID, Name, UTCStart, Actions, Enabled")] AssignmentTask task) {
 			if (ModelState.IsValid) {
 				tasks.Update(task);
 				return RedirectToAction(nameof(Index));
@@ -96,11 +96,11 @@ namespace PlanspielWeb.Controllers {
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult EditAction([Bind("ID, TaskID, GroupSteamID, " +
+		public IActionResult EditAction([FromForm][Bind("ID, TaskID, GroupSteamID, " +
 			"SecondsFromStart, Type, Value")] AssignmentAction action) {
 			if (ModelState.IsValid) {
 				tasks.Update(action);
-				return RedirectToAction(nameof(Details), action.TaskID);
+				return RedirectToAction(nameof(Details), new { id = action.TaskID });
 			}
 
 			return View(action);

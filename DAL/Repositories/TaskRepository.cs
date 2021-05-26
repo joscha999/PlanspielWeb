@@ -41,31 +41,32 @@ namespace DAL.Repositories {
 		public AssignmentAction GetActionById(int id) {
 			EnsureOpen();
 
-			var action = Database.Connection.Query<AssignmentAction>(
+			return Database.Connection.Query<AssignmentAction>(
 				"SELECT * FROM AssignmentActions WHERE Id = @id", new { id }).FirstOrDefault();
-
-			return action;
 		}
 
-		public IEnumerable<AssignmentAction> GetActionsForTask(int taskId, int groupSteamID = -1) {
+		public IEnumerable<AssignmentAction> GetActionsForTask(int taskId, long groupSteamID = -1) {
 			EnsureOpen();
 
 			//admin - query all
 			if (groupSteamID == -2) {
 				return Database.Connection.Query<AssignmentAction>(
-				"SELECT * FROM AssignmentActions WHERE TaskID = @taskId", new { taskId });
+					"SELECT * FROM AssignmentActions WHERE TaskID = @taskId", new { taskId });
 			}
 
 			return Database.Connection.Query<AssignmentAction>(
-				"SELECT * FROM AssignmentActions WHERE TaskID = @taskId " +
-				"AND (GroupSteamID = -1 OR GroupSteamID = @groupSteamID)", new { taskId, groupSteamID });
+				"SELECT * FROM AssignmentActions WHERE TaskID = @taskId "
+				+ "AND (GroupSteamID = -1 OR GroupSteamID = @groupSteamID)",
+				new { taskId, groupSteamID });
 		}
 
-		public IEnumerable<AssignmentTask> GetAll(int groupSteamID) {
+		public IEnumerable<AssignmentTask> GetAll(long groupSteamID, bool includeDisabled = false) {
 			EnsureOpen();
 
-			foreach (var task in Database.Connection.Query<AssignmentTask>(
-				"SELECT * FROM AssignmentTasks")) {
+			var sql = "SELECT * FROM AssignmentTasks";
+			sql += includeDisabled ? "" : " WHERE Enabled = true";
+
+			foreach (var task in Database.Connection.Query<AssignmentTask>(sql)) {
 				if (task.ID == null)
 					continue;
 
@@ -78,12 +79,13 @@ namespace DAL.Repositories {
 			EnsureOpen();
 
 			Database.Connection.Execute(@"INSERT OR IGNORE INTO
-AssignmentTasks(Id, Name, UTCStart)
-Values(@id, @name, @utcStart)",
+AssignmentTasks(Id, Name, UTCStart, Enabled)
+Values(@id, @name, @utcStart, @enabled)",
 				new {
 					id = task.ID,
 					name = task.Name,
-					utcStart = task.UTCStart
+					utcStart = task.UTCStart,
+					enabled = task.Enabled
 				});
 		}
 
@@ -105,11 +107,12 @@ Values(@id, @taskID, @groupSteamID, @secondsFromStart, @type, @value)",
 
 		public void Update(AssignmentTask task) {
 			Database.Connection.Execute(@"UPDATE AssignmentTasks SET
-Id = @id, Name = @name, UTCStart = @utcStart WHERE Id = @id",
+Id = @id, Name = @name, UTCStart = @utcStart, Enabled = @enabled WHERE Id = @id",
 				new {
 					id = task.ID,
 					name = task.Name,
-					utcStart = task.UTCStart
+					utcStart = task.UTCStart,
+					enabled = task.Enabled
 				});
 
 			if (task.Actions != null) {
@@ -122,7 +125,7 @@ Id = @id, Name = @name, UTCStart = @utcStart WHERE Id = @id",
 			EnsureOpen();
 
 			Database.Connection.Execute(@"UPDATE AssignmentActions SET
-Id = @id, TaskID = @taskID, GroupSteamID = @groupSteamID, SecondsFromStart = @secondsFromStart
+Id = @id, TaskID = @taskID, GroupSteamID = @groupSteamID, SecondsFromStart = @secondsFromStart,
 Type = @type, Value = @value WHERE Id = @id",
 				new {
 					id = action.ID,

@@ -22,6 +22,9 @@
             <th>
                 Start Time (UTC)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Enabled)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -36,6 +39,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.UTCStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Enabled)
                 </td>
                 <td>
                     <a asp-action="EditTask" asp-route-id="@item.ID">Edit</a> |

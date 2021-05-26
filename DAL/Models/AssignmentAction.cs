@@ -18,7 +18,7 @@ namespace DAL.Models {
 		/// <summary>
 		/// The Group this Action should apply to, -1 for all, default = -1.
 		/// </summary>
-		public int GroupSteamID { get; set; } = -1;
+		public long GroupSteamID { get; set; } = -1;
 
 		public int SecondsFromStart { get; set; }
 
