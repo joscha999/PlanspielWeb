@@ -49,6 +49,7 @@ namespace DAL.Models {
 		Unpause = 4,
 		CreateSave = 5,
 		DisplayMessage = 6,
+		Research = 7,
 
 		//Event Triggers 1000..
 		IncreasedResearchSpeed = 1000,
