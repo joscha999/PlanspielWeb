@@ -50,6 +50,7 @@ namespace DAL.Models {
 		CreateSave = 5,
 		DisplayMessage = 6,
 		Research = 7,
+		SetCanConstructBuildings = 8,
 
 		//Event Triggers 1000..
 		IncreasedResearchSpeed = 1000,
