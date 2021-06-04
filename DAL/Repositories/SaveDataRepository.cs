@@ -73,13 +73,13 @@ namespace DAL.Repositories {
 		public int GetMinID() {
 			EnsureOpen();
 
-			return Database.Connection.QueryFirst<int>("SELECT MIN(Id) FROM SaveData");
+			return Database.Connection.ExecuteScalar<int>("SELECT MIN(Id) FROM SaveData");
 		}
 
 		public int GetMaxID() {
 			EnsureOpen();
 
-			return Database.Connection.QueryFirst<int>("SELECT MAX(Id) FROM SaveData");
+			return Database.Connection.ExecuteScalar<int>("SELECT MAX(Id) FROM SaveData");
 		}
 
         public void AddOrIgnore(SaveData data) {
