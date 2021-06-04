@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Planspiel.Models {
     public class SaveDataModel {
@@ -13,14 +14,14 @@ namespace Planspiel.Models {
 
         public double CompanyValue { get; set; }
 
-        //public double DemandSatisfaction { get; set; }
+		public List<ProductDemandInfoModel> DemandSatisfaction { get; set; }
 
-        /// <summary>
-        /// Average machine uptime.
-        /// </summary>
-        public double MachineUptime { get; set; }
+		/// <summary>
+		/// Average machine uptime.
+		/// </summary>
+		public double MachineUptime { get; set; }
 
-        public bool AbleToPayLoansBack { get; set; }
+		public List<LoanInfoModel> LoansList { get; set; }
 
         public double AveragePollution { get; set; }
 
@@ -30,6 +31,8 @@ namespace Planspiel.Models {
 
         public int RegionCount { get; set; }
 
-        public double ShareValue { get; set; } = -1;
+		public double Balance { get; set; }
+
+		public double ShareValue { get; set; } = -1;
     }
 }

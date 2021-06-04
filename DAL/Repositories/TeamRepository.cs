@@ -80,24 +80,5 @@ WHERE Id = @id",
 
             Database.Connection.Execute("DELETE FROM Teams WHERE Id = @id;", new { id = id.Value });
         }
-
-        public SaveData GetSaveData(int steamId) {
-            EnsureOpen();
-
-            return Database.Connection.Query<SaveData>(
-                "SELECT * FROM SaveData WHERE SteamID = @steamId", new { steamId }).FirstOrDefault();
-        }
-
-        public IEnumerable<SaveData> GetSaveDataForTeam(long steamId) {
-            EnsureOpen();
-
-            return Database.Connection.Query<SaveData>("SELECT * FROM SaveData WHERE SteamID = @sid", new { sid = steamId });
-        }
-
-        public IEnumerable<SaveData> GetAllSaveData() {
-            EnsureOpen();
-
-            return Database.Connection.Query<SaveData>("SELECT * FROM SaveData");
-        }
     }
 }

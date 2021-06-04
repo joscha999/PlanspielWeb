@@ -6,23 +6,30 @@ using Planspiel.Models;
 using ShareCalculationSystem;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DAL.Models {
     public class SaveData {
         public int? Id { get; set; }
         public long SteamID { get; set; }
-        public double Profit { get; set; }
+		public int UnixDays { get; set; }
+		public double Profit { get; set; }
         public double CompanyValue { get; set; }
-        public double DemandSatisfaction { get; set; }
-        public double MachineUptime { get; set; }
-        public bool AbleToPayLoansBack { get; set; }
-        public double AveragePollution { get; set; }
+
+		[Write(false)]
+		public List<ProductDemandInfo> DemandSatisfaction { get; set; }
+		public double MachineUptime { get; set; }
+
+		[Write(false)]
+		public List<LoanInfo> LoansList { get; set; }
+		public double AveragePollution { get; set; }
         public int BuildingCount { get; set; }
         public int UnlockedResearchCount { get; set; }
         public int RegionCount { get; set; }
+		public double Balance { get; set; }
 
-        private double _shareValue = -1;
+		private double _shareValue = -1;
         public double ShareValue {
             get {
 				return -1;
@@ -37,15 +44,14 @@ namespace DAL.Models {
 
         internal double InternalShareValue => _shareValue;
 
-        public int UnixDays {
-            get => Date.UnixDays;
-            set => Date = new Date(value);
-        }
+		[Write(false)]
+		[JsonIgnore]
+		public Date Date {
+			get => new Date(UnixDays + 481);
+			set => UnixDays = value.UnixDays - 481;
+		}
 
-        [Write(false)]
-        [JsonIgnore]
-        public Date Date { get; set; }
-
+		[Write(false)]
         [JsonIgnore]
         public string IngameDate => Date.ToString();
 
@@ -55,9 +61,7 @@ namespace DAL.Models {
                 SteamID = sd.SteamID,
                 Profit = sd.Profit,
                 CompanyValue = sd.CompanyValue,
-                DemandSatisfaction = sd.DemandSatisfaction,
                 MachineUptime = sd.MachineUptime,
-                AbleToPayLoansBack = sd.AbleToPayLoansBack,
                 AveragePollution = sd.AveragePollution,
                 BuildingCount = sd.BuildingCount,
                 UnlockedResearchCount = sd.UnlockedResearchCount,
@@ -68,20 +72,24 @@ namespace DAL.Models {
         }
 
         public SaveDataModel ToModel() {
-			return new SaveDataModel {
-				AbleToPayLoansBack = AbleToPayLoansBack,
+			var sdm = new SaveDataModel {
 				AveragePollution = AveragePollution,
 				BuildingCount = BuildingCount,
 				CompanyValue = CompanyValue,
 				UnixDays = UnixDays,
-                //DemandSatisfaction = DemandSatisfaction,
                 MachineUptime = MachineUptime,
                 Profit = Profit,
                 RegionCount = RegionCount,
                 ShareValue = _shareValue,
                 SteamID = SteamID,
-                UnlockedResearchCount = UnlockedResearchCount
+                UnlockedResearchCount = UnlockedResearchCount,
+				Balance = Balance
             };
+
+			sdm.DemandSatisfaction = DemandSatisfaction.ConvertAll(ds => ds.ToModel());
+			sdm.LoansList = LoansList.ConvertAll(l => l.ToModel());
+
+			return sdm;
         }
 
         public static void Setup(Database database) {
@@ -91,13 +99,13 @@ namespace DAL.Models {
 [UnixDays] INTEGER NOT NULL,
 [Profit] REAL NOT NULL,
 [CompanyValue] REAL NOT NULL,
-[DemandSatisfaction] REAL NOT NULL,
 [MachineUptime] REAL NOT NULL,
-[AbleToPayLoansBack] INTEGER NOT NULL,
 [AveragePollution] REAL NOT NULL,
 [BuildingCount] INTEGER NOT NULL,
 [UnlockedResearchCount] INTEGER NOT NULL,
-[RegionCount] INTEGER NOT NULL
+[RegionCount] INTEGER NOT NULL,
+[Balance] INTEGER NOT NULL,
+[ShareValue] INTEGER NOT NULL
 );");
         }
     }

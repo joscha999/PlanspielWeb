@@ -52,14 +52,13 @@
 
 <div>
     <hr />
-    <h4>Monatliche Daten</h4>
-    <table class="table">
+    <h4>Firmenberichte des letzten Monats</h4>
+    @*<table class="table">
         <thead>
             <tr>
                 <th>Date time (in-game)</th>
                 <th>Profit</th>
                 <th>Company value</th>
-                @*<th>Demand satisfaction</th>*@
                 <th>Machine uptime</th>
                 <th>Avg. pollution</th>
 
@@ -74,26 +73,84 @@
         </thead>
         <tbody>
             @foreach (var data in Model.Data) {
-            <tr>
-                <td>@data.IngameDate</td>
-                <td>@data.Profit.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
-                <td>@data.CompanyValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
-                @*<td>@data.DemandSatisfaction</td>*@
-                <td>@data.MachineUptime.ToString("P2")</td>
-                <td>@data.AveragePollution.ToString("P2")</td>
+                <tr>
+                    <td>@data.IngameDate</td>
+                    <td>@data.Profit.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                    <td>@data.CompanyValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                    <td>@data.MachineUptime.ToString("P2")</td>
+                    <td>@data.AveragePollution.ToString("P2")</td>
 
-                @if (user != null && user.Admin) {
-                    <td>@data.ShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
-                    <td>@data.BuildingCount</td>
-                    <td>@data.UnlockedResearchCount</td>
-                    <td>@data.RegionCount</td>
-                    <td>
-                        <a asp-controller="SaveDatas" asp-action="DeleteFromTeam"
-                           asp-route-id="@data.Id" asp-route-teamId="@Model.Id">Delete</a>
-                    </td>
-                }
-            </tr>
+                    @if (user != null && user.Admin) {
+                        <td>@data.ShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
+                        <td>@data.BuildingCount</td>
+                        <td>@data.UnlockedResearchCount</td>
+                        <td>@data.RegionCount</td>
+                        <td>
+                            <a asp-controller="SaveDatas" asp-action="DeleteFromTeam"
+                               asp-route-id="@data.Id" asp-route-teamId="@Model.Id">Delete</a>
+                        </td>
+                    }
+                </tr>
             }
         </tbody>
-    </table>
+    </table>*@
+
+    <div id="accordion">
+        @foreach (var sd in Model.Data) {
+            <div class="card">
+                <div class="card-header pointer" id="headingOne" data-toggle="collapse" data-target="#collapse-@sd.Id">
+                    <h5>Bericht für den @sd.IngameDate</h5>
+                </div>
+
+                <div id="collapse-@sd.Id" class="collapse" data-parent="#accordion">
+                    <div class="card-body row">
+                        <div class="card" style="width: 15%;">
+                            <div class="card-body">
+                                <h5 class="card-title">Profit</h5>
+                                <p class="card-text">
+                                    @sd.Profit.ToString("C2", new System.Globalization.CultureInfo("US-us"))
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="card" style="width: 15%;">
+                            <div class="card-body">
+                                <h5 class="card-title">Firmenwert</h5>
+                                <p class="card-text">
+                                    @sd.CompanyValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="card" style="width: 15%;">
+                            <div class="card-body">
+                                <h5 class="card-title">Maschinenauslastung</h5>
+                                <p class="card-text">
+                                    @sd.MachineUptime.ToString("P2", new System.Globalization.CultureInfo("US-us"))
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="card" style="width: 15%;">
+                            <div class="card-body">
+                                <h5 class="card-title">Durchschnittliche Umweltverschmutzung</h5>
+                                <p class="card-text">
+                                    @sd.AveragePollution.ToString("P2", new System.Globalization.CultureInfo("US-us"))
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="card" style="width: 15%;">
+                            <div class="card-body">
+                                <h5 class="card-title">Firmenbewertung</h5>
+                                <p class="card-text">
+                                    @sd.ShareValue.ToString("F2", new System.Globalization.CultureInfo("US-us"))
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

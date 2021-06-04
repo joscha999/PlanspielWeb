@@ -9,6 +9,7 @@ using System.Text;
 namespace DAL.Models {
     public class Team {
         private static TeamRepository teamRepository;
+		private static SaveDataRepository saveDataRepository;
 
         public int? Id { get; set; }
         public string Name { get; set; }
@@ -18,10 +19,11 @@ namespace DAL.Models {
         public IEnumerable<User> Members => teamRepository.GetMembersForId(Id);
 
         [JsonIgnore]
-        public IEnumerable<SaveData> Data => teamRepository.GetSaveDataForTeam(SteamID);
+        public IEnumerable<SaveData> Data => saveDataRepository.GetForTeam(SteamID);
 
         public static void Setup(Database database) {
             teamRepository = new TeamRepository(database);
+			saveDataRepository = new SaveDataRepository(database);
 
             database.Connection.Execute(@"CREATE TABLE IF NOT EXISTS [Teams] (
 [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,

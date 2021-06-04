@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tester", "Tester\Tester.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Planspiel.Models", "Planspiel.Models\Planspiel.Models.csproj", "{39EEFF5B-05F1-4769-94FB-297AD633CFC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareCalculationSystem", "ShareCalculationSystem\ShareCalculationSystem.csproj", "{16E84C4F-1433-449C-8111-767B68241308}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShareCalculationSystem", "ShareCalculationSystem\ShareCalculationSystem.csproj", "{16E84C4F-1433-449C-8111-767B68241308}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EC9A9B3D-8894-473C-879D-D3D605B18A9C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

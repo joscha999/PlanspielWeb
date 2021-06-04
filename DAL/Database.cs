@@ -34,6 +34,8 @@ namespace DAL {
 			News.Setup(this);
 			AssignmentAction.Setup(this);
 			AssignmentTask.Setup(this);
+			ProductDemandInfo.Setup(this);
+			LoanInfo.Setup(this);
         }
     }
 }

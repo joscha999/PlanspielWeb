@@ -23,7 +23,14 @@ namespace PlanspielWeb
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls(/*"http://192.168.178.23:5001/", */"http://roi.jgdev.de:5001/");
+					var urls = new List<string>();
+					urls.Add("http://roi.jgdev.de:5001/");
+
+#if DEBUG
+					urls.Add("http://192.168.178.23:5001/");
+#endif
+
+					webBuilder.UseUrls(urls.ToArray());
                 });
     }
 }
