@@ -341,3 +341,5 @@ healthchecksdb
 
 # custom
 *.sqlite
+
+**/wwwroot/img/*
