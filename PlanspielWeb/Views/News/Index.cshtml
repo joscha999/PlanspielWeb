@@ -39,7 +39,6 @@
         grid-template-areas: @Html.Raw(Model.GridLayout);
 
         grid-auto-columns: calc(100% / @Model.GridWidth);
-        grid-auto-rows: 300px;
 
         width: 100%;
         height: 100%;
@@ -53,23 +52,26 @@
 
 <div class="gridContainer">
     @foreach (var kvp in Model.News) {
-        <div class="gridItem" style="grid-area: @kvp.Key; overflow: auto;">
-            <div class="card-body">
-                <h3 class="card-title">
-                    @if (!kvp.Value.Visible) {
-                        <span>[Hidden] </span>
-                    }
-                    @kvp.Value.Title
-                    @if (user != null && user.Admin) {<span>|</span>
-                        <a asp-action="Edit" asp-route-id="@kvp.Value.Id">Edit</a> <span>|</span>
-                        <a asp-action="Details" asp-route-id="@kvp.Value.Id">Details</a> <span>|</span>
-                        <a asp-action="Delete" asp-route-id="@kvp.Value.Id">Delete</a>
-                    }
-                </h3>
-                <p class="card-text">
-                    @Html.Raw(kvp.Value.Content)
-                </p>
-            </div>
+    <div class="gridItem" style="grid-area: @kvp.Key; overflow: auto;">
+        @if (!string.IsNullOrEmpty(kvp.Value.PictureName)) {
+            <img src="~/img/@kvp.Value.PictureName" class="card-img-top" />
+        }
+        <div class="card-body">
+            <h3 class="card-title">
+                @if (!kvp.Value.Visible) {
+                    <span>[Hidden] </span>
+                }
+                @kvp.Value.Title
+                @if (user != null && user.Admin) {<span>|</span>
+                    <a asp-action="Edit" asp-route-id="@kvp.Value.Id">Edit</a> <span>|</span>
+                    <a asp-action="Details" asp-route-id="@kvp.Value.Id">Details</a> <span>|</span>
+                    <a asp-action="Delete" asp-route-id="@kvp.Value.Id">Delete</a>
+                }
+            </h3>
+            <p class="card-text">
+                @Html.Raw(kvp.Value.Content)
+            </p>
         </div>
+    </div>
     }
 </div>
