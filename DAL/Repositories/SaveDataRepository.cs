@@ -82,6 +82,8 @@ Values(@id, @steamId, @unixDays, @profit, @companyValue, @machineUptime,
 					shareValue = data.ShareValue
                 });
 
+			data.Id = Database.Connection.QueryFirst<int>("SELECT last_insert_rowid()");
+
 			foreach (var pd in data.DemandSatisfaction) {
 				Database.Connection.Execute(@"INSERT OR IGNORE INTO
 ProductDemandInfo(Id, SaveDataId, ProductName, Settlement, Shop, Demand, Sales)
