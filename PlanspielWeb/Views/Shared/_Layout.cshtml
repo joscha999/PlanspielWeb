@@ -40,7 +40,7 @@
             <div class="navbar-collapse collapse w-25 order-3 dual-collapse2">
                 <ul class="navbar-nav ml-auto">
                     @if (user != null) {
-                        <li class="nav-item">
+                        <li class="nav-item @((string)ViewData["current"] == "news" ? "active" : "")">
                             <a class="nav-link" asp-controller="News" asp-action="Index">News</a>
                         </li>
                         @if (user.TeamId != null) {
