@@ -53,20 +53,18 @@
 
 <div class="gridContainer">
     @foreach (var kvp in Model.News) {
-        <div class="gridItem" style="grid-area: @kvp.Key;">
-            @if (user != null && user.Admin) {
-                <div class="card-header text-muted">
-                    <a asp-action="Edit" asp-route-id="@kvp.Value.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@kvp.Value.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@kvp.Value.Id">Delete</a>
-                </div>
-            }
+        <div class="gridItem" style="grid-area: @kvp.Key; overflow: auto;">
             <div class="card-body">
                 <h3 class="card-title">
                     @if (!kvp.Value.Visible) {
                         <span>[Hidden] </span>
                     }
                     @kvp.Value.Title
+                    @if (user != null && user.Admin) {<span>|</span>
+                        <a asp-action="Edit" asp-route-id="@kvp.Value.Id">Edit</a> <span>|</span>
+                        <a asp-action="Details" asp-route-id="@kvp.Value.Id">Details</a> <span>|</span>
+                        <a asp-action="Delete" asp-route-id="@kvp.Value.Id">Delete</a>
+                    }
                 </h3>
                 <p class="card-text">
                     @Html.Raw(kvp.Value.Content)
