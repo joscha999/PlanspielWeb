@@ -35,9 +35,9 @@ namespace Tester {
                     Date = new Date(0, 0, 0),
                     Profit = i * 100,
                     CompanyValue = i * 200,
-                    DemandSatisfaction = i * 0.1d,
+                    //DemandSatisfaction = i * 0.1d,
                     MachineUptime = i * 0.15d,
-                    AbleToPayLoansBack = (i % 2) == 0,
+                    //AbleToPayLoansBack = (i % 2) == 0,
                     AveragePollution = i * 0.05
                 });
             }
