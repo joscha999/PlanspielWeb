@@ -3,6 +3,7 @@ using DAL.Models;
 using DAL.Repositories;
 using PlanspielWeb.Attributes;
 using Planspiel.Models;
+using PlanspielWeb.Models;
 
 namespace PlanspielWeb.Controllers {
     [AdminOnly]
@@ -13,9 +14,28 @@ namespace PlanspielWeb.Controllers {
             saveData = sd;
         }
 
-        public IActionResult Index() => View(saveData.GetAll());
+		public IActionResult Index(int currStartID = int.MinValue) {
+			var max = saveData.GetMaxID();
+			var min = saveData.GetMinID();
 
-        public IActionResult Details(int? id) {
+			if (currStartID == int.MinValue)
+				currStartID = max;
+			if (currStartID > max)
+				currStartID = max;
+			if (currStartID < min)
+				currStartID = min;
+
+			var vm = new SaveDataListViewModel {
+				CanGoNext = currStartID < max,
+				CanGoPrevious = currStartID - SaveDataListViewModel.ItemsPerPage > min,
+				CurrentStartID = currStartID,
+				Data = saveData.GetPagedFrom(currStartID, SaveDataListViewModel.ItemsPerPage)
+			};
+
+			return View(vm);
+		}
+
+		public IActionResult Details(int? id) {
             if (id == null)
                 return NotFound();
 

@@ -1,96 +1,94 @@
-﻿@model IEnumerable<DAL.Models.SaveData>
+﻿@model SaveDataListViewModel
 
 @{
     ViewData["Title"] = "Index";
     ViewData["current"] = "saveData";
 }
 
-<h1>Index</h1>
+<div class="card" style="margin-bottom: 25px;">
+    <div class="card-header">
+        <div style="float: left;">
+            @if (Model.CanGoPrevious) {
+                <a asp-action="Index" asp-route-currStartID="@Model.PreviousStartID">
+                    <span>🡄</span>
+                </a>
+            }
+        </div>
+        <div style="float: right;">
+            @if (Model.CanGoNext) {
+                <a asp-action="Index" asp-route-currStartID="@Model.NextStartID">
+                    <span class="text-right">🡆</span>
+                </a>
+            }
+        </div>
+        <div style="text-align: center;">
+            <span class="text-center">
+                SaveData IDs in range
+                @Model.CurrentStartID<span>..</span>@(Math.Max(Model.CurrentStartID - SaveDataListViewModel.ItemsPerPage, 0))
+            </span>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SteamID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Profit)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CompanyValue)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DemandSatisfaction)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MachineUptime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AveragePollution)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BuildingCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnlockedResearchCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RegionCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShareValue)
-            </th>
+            <th>SteamID </th>
+            <th>Date</th>
+            <th>Profit</th>
+            <th>CompanyValue</th>
+            <th>DemandSatisfaction</th>
+            <th>MachineUptime</th>
+            <th>AveragePollution</th>
+            <th>BuildingCount</th>
+            <th>UnlockedResearchCount</th>
+            <th>RegionCount</th>
+            <th>ShareValue</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SteamID)
-            </td>
-            <td>
-                @item.Date
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Profit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CompanyValue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DemandSatisfaction)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MachineUptime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AveragePollution)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BuildingCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnlockedResearchCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegionCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShareValue)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Data) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SteamID)
+                </td>
+                <td>
+                    @item.Date
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Profit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyValue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DemandSatisfaction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MachineUptime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AveragePollution)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BuildingCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnlockedResearchCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegionCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShareValue)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

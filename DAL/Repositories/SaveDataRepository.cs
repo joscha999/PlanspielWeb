@@ -59,6 +59,29 @@ namespace DAL.Repositories {
 			}
         }
 
+		public IEnumerable<SaveData> GetPagedFrom(int unixDayMax, int count) {
+			EnsureOpen();
+
+			foreach (var sd in Database.Connection.Query<SaveData>(
+				"SELECT * FROM SaveData WHERE Id <= @max ORDER BY Id DESC LIMIT @amount",
+				new { max = unixDayMax, amount = count })) {
+				QuerrySup(sd);
+				yield return sd;
+			}
+		}
+
+		public int GetMinID() {
+			EnsureOpen();
+
+			return Database.Connection.QueryFirst<int>("SELECT MIN(Id) FROM SaveData");
+		}
+
+		public int GetMaxID() {
+			EnsureOpen();
+
+			return Database.Connection.QueryFirst<int>("SELECT MAX(Id) FROM SaveData");
+		}
+
         public void AddOrIgnore(SaveData data) {
             EnsureOpen();
 
@@ -173,7 +196,6 @@ Id = @id, SaveDataId = @sdid, LoanAmount = @loanAmount, LoanInterest = @loanInte
 			Database.Connection.Execute("DELETE FROM LoanInfo WHERE SaveDataId = @id;", new { id = id.Value });
 		}
 
-        //TODO: same method in SaveDataRepo and TeamRepo
         public IEnumerable<SaveData> GetAll() {
             EnsureOpen();
 
