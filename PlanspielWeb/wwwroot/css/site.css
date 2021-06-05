@@ -73,3 +73,7 @@ body {
 .pointer {
     cursor: pointer;
 }
+
+.justify {
+    text-align: justify;
+}

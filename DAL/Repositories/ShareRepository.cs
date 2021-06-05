@@ -12,6 +12,8 @@ namespace DAL.Repositories {
 
         private readonly SaveDataRepository SaveDataRepository;
 
+		private readonly Stack<SaveData> CalculationStack = new Stack<SaveData>();
+
         public ShareSystem ShareSystem { get; }
 
         public ShareRepository(SaveDataRepository saveDataRepository) {
@@ -23,39 +25,34 @@ namespace DAL.Repositories {
         }
 
         private IEnumerable<SaveDataModel> GetData(Date startDate, int period) {
-            var dbData = SaveDataRepository.GetPeriod(startDate, startDate.AddDays(-period));
+			//var dbData = SaveDataRepository.GetPeriod(startDate, startDate.AddDays(-period));
 
-            foreach (var d in dbData) {
-                if (d.Date.UnixDays == startDate.UnixDays)
-                    continue;
+			//foreach (var d in dbData) {
+			//    if (d.Date.UnixDays == startDate.UnixDays)
+			//        continue;
 
-                if (d.InternalShareValue == -1) {
-                    d.ShareValue = ShareSystem.Calculate(d.ToModel());
-                    SaveDataRepository.Update(d);
-                }
-            }
+			//    if (d.InternalShareValue == -1) {
+			//        d.ShareValue = ShareSystem.Calculate(d.ToModel());
+			//        SaveDataRepository.Update(d);
+			//    }
+			//}
 
-            return dbData.Select(d => d.ToModel());
+			//return dbData.Select(d => d.ToModel());
+			return null;
         }
 
         public double Calculate(SaveData data) => ShareSystem.Calculate(data.ToModel());
 
-        //TODO: make this shit configurable via web interface
-        //public static double CalculateSharePrice(SaveData data) {
-        //    var profitInc = data.Profit / 100_000;
-        //    var companyValueBase = data.CompanyValue / 1_000_000 * 3;
-        //    var machineDowntimeDec = (1 - data.MachineUptime) * 100;
-        //    var loanPaybackMulti = data.AbleToPayLoansBack ? 0.9d : 1d;
-        //    var pollutionDec = data.AveragePollution * 1_000;
+		public void RequestCalculation(SaveData sd, int depth = 0) {
+			if (CalculationStack.Contains(sd))
+				return;
 
-        //    var final = (companyValueBase
-        //            + profitInc
-        //            - machineDowntimeDec
-        //            - pollutionDec)
-        //            * loanPaybackMulti;
+			CalculationStack.Push(sd);
 
-        //    return final > 0 ? final : 0;
-        //}
+			var previousDay = SaveDataRepository.GetForDate(sd.UnixDays - 1);
+			if (previousDay != null)
+				RequestCalculation(previousDay);
+		}
 
         //new system:
         //[ShareSystem], [ShareCalculator]

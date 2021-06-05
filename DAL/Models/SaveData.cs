@@ -32,7 +32,7 @@ namespace DAL.Models {
 		private double _shareValue = -1;
         public double ShareValue {
             get {
-				return -1;
+				return 0;
 
                 if (_shareValue == -1)
                     _shareValue = ShareRepository.Instance.Calculate(this);
@@ -41,8 +41,6 @@ namespace DAL.Models {
             }
             set => _shareValue = value;
         }
-
-        internal double InternalShareValue => _shareValue;
 
 		[Write(false)]
 		[JsonIgnore]

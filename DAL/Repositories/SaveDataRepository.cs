@@ -48,16 +48,26 @@ namespace DAL.Repositories {
 			return sd;
         }
 
-        public IEnumerable<SaveData> GetPeriod(Date end, Date start) {
+        public IEnumerable<SaveData> GetPeriod(int unixDayStart, int unixDayEnd) {
             EnsureOpen();
 
             foreach (var sd in Database.Connection.Query<SaveData>(
-                "SELECT * FROM SaveData WHERE UnixDays >= @start AND UnixDays <= @end ORDER BY UnixDays",
-                new { start = start.UnixDays, end = end.UnixDays })) {
+                "SELECT * FROM SaveData WHERE UnixDays >= @start AND UnixDays <= @end ORDER BY UnixDays DESC",
+                new { start = unixDayStart, end = unixDayEnd })) {
 				QuerrySup(sd);
 				yield return sd;
 			}
         }
+
+		public SaveData GetForDate(int unixDay) {
+			EnsureOpen();
+
+			var sd = Database.Connection.QueryFirstOrDefault<SaveData>(
+				"SELECT * FROM SaveData WHERE UnixDays = @day", new { day = unixDay });
+			if (sd != null)
+				QuerrySup(sd);
+			return sd;
+		}
 
 		public IEnumerable<SaveData> GetPagedFrom(int unixDayMax, int count) {
 			EnsureOpen();
