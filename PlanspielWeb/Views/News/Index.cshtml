@@ -11,20 +11,20 @@
         <div style="float: left;">
             @if (Model.CanGoPrevious) {
                 <a asp-action="Index" asp-route-id="@Model.PreviousPageID">
-                    <span>🡄</span>
+                    <span>🡄 Ausgabe #@Model.PreviousPageID</span>
                 </a>
             }
         </div>
         <div style="float: right;">
             @if (Model.CanGoNext) {
                 <a asp-action="Index" asp-route-id="@Model.NextPageID">
-                    <span class="text-right">🡆</span>
+                    <span class="text-right">Ausgabe #@Model.NextPageID 🡆</span>
                 </a>
             }
         </div>
         <div style="text-align: center;">
             <span class="text-center">
-                Title
+                Gazelle - Ausgabe #@Model.PageID
                 @if (Context.Session.TryGet<DAL.Models.User>("user", out var user) && user.Admin) {
                     <span> - </span><a asp-action="Create">Create new Entry</a>
                     <span> - </span><a asp-action="SetAllVisible" asp-route-id="@Model.PageID">Set all Visible</a>
