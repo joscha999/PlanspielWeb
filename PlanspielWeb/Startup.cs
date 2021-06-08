@@ -32,8 +32,6 @@ namespace PlanspielWeb {
 			var nr = new NewsRepository(db);
 			var tar = new TaskRepository(db);
 
-            //AddTestData(tr, ur, sdr);
-
             services.AddSingleton(db);
             services.AddSingleton(sdr);
             services.AddSingleton(tr);

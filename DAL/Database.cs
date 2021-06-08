@@ -6,15 +6,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace DAL {
     public class Database {
         public static Database Instance;
 
-        public SqliteConnection Connection { get; }
-        public PasswordHasher PasswordHasher { get; }
+		public SqliteConnection Connection => Connections.Value;
 
-        public Database(string dbPath) {
+		public PasswordHasher PasswordHasher { get; }
+
+		private ThreadLocal<SqliteConnection> Connections;
+
+		public Database(string dbPath) {
             if (Instance != null)
                 throw new InvalidOperationException("Cannot create two Database instances!");
 
@@ -22,8 +26,11 @@ namespace DAL {
 
             PasswordHasher = new PasswordHasher();
 
-            Connection = new SqliteConnection($"Data Source={dbPath};");
-            Connection.Open();
+			Connections = new ThreadLocal<SqliteConnection>(() => {
+				var c = new SqliteConnection($"Data Source={dbPath};");
+				c.Open();
+				return c;
+			});
 
 			SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
 
