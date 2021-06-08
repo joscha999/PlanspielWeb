@@ -2,13 +2,17 @@
 using DAL.Models;
 using DAL.Repositories;
 using PlanspielWeb.Attributes;
+using PlanspielWeb.Models;
+using System.Collections.Generic;
 
 namespace PlanspielWeb.Controllers {
     public class TeamsController : AppController {
         private readonly TeamRepository teams;
+        private readonly SaveDataRepository saves;
 
-        public TeamsController(TeamRepository teamRepository) {
+        public TeamsController(TeamRepository teamRepository, SaveDataRepository saveDataRepository) {
             teams = teamRepository;
+            saves = saveDataRepository;
         }
 
         [AdminOnly]
@@ -23,7 +27,17 @@ namespace PlanspielWeb.Controllers {
             if (team == null)
                 return NotFound();
 
-            return View(team);
+            var vm = new TeamDetailsViewModel();
+            vm.Team = team;
+            vm.PriceItems = new List<ChartItem>();
+
+            foreach (var sd in saves.GetForTeam(team.SteamID)) {
+                vm.PriceItems.Add(new ChartItem { Label = sd.Date.ToString(), Quantity = (float)sd.MachineUptime });
+            }
+
+            vm.PriceItems.Reverse();
+
+            return View(vm);
         }
 
         [AdminOnly]

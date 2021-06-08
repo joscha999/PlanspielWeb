@@ -1,10 +1,10 @@
-﻿@model DAL.Models.Team
+﻿@model PlanspielWeb.Models.TeamDetailsViewModel
 
 @{
     ViewData["Title"] = "Teamübersicht";
     Context.Session.TryGet<DAL.Models.User>("user", out var user);
 
-    if (user != null && user.TeamId == Model.Id)
+    if (user != null && user.TeamId == Model.Team.Id)
         ViewData["current"] = "myTeam";
 }
 
@@ -13,17 +13,17 @@
     <h4>Teamübersicht</h4>
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Team.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Team.Name)
         </dd>
         @if (user != null && user.Admin) {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.SteamID)
+                @Html.DisplayNameFor(model => model.Team.SteamID)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.SteamID)
+                @Html.DisplayFor(model => model.Team.SteamID)
             </dd>
         }
     </dl>
@@ -32,7 +32,7 @@
 <div>
     <hr />
     <h4>Spieler</h4>
-    @foreach (var member in Model.Members) {
+    @foreach (var member in Model.Team.Members) {
         @if (user != null && user.Admin) {
             <a href="/Users/Details/@member.Id">@member.Username</a><br />
         } else {
@@ -45,10 +45,93 @@
     <div>
         <hr />
         <h4>Aktionen</h4>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Edit" asp-route-id="@Model.Team.Id">Edit</a> |
         <a asp-action="Index">Back to List</a>
     </div>
 }
+
+<div>
+    @{
+        var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.PriceItems.Select(x => x.Label).ToList());
+        var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.PriceItems.Select(x => x.Quantity).ToList());
+    }
+    <div class="row">
+        <canvas id="chart"></canvas>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            var chartName = "chart";
+            var ctx = document.getElementById(chartName).getContext('2d');
+            var data = {
+                labels: @Html.Raw(XLabels),
+                datasets: [{
+                    label: "Machine Uptime",
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderWidth: 1,
+                    data: @Html.Raw(YValues)
+                }]
+            };
+
+            var options = {
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: true,
+                            color: "rgba(255,99,164,0.2)"
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
+            };
+
+            var myChart = new Chart(ctx, {
+                options: options,
+                data: data,
+                type: 'line'
+            });
+        });
+    </script>
+</div>
 
 <div>
     <hr />
@@ -96,7 +179,7 @@
     </table>*@
 
     <div id="accordion">
-        @foreach (var sd in Model.Data) {
+        @foreach (var sd in Model.Team.Data) {
             <div class="card">
                 <div class="card-header pointer" id="headingOne" data-toggle="collapse" data-target="#collapse-@sd.Id">
                     <h5>Bericht für den @sd.IngameDate</h5>

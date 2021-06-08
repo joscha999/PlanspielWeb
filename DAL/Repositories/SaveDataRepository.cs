@@ -30,11 +30,11 @@ namespace DAL.Repositories {
 				new { sdid = sd.Id }).ToList();
 		}
 
-		public IEnumerable<SaveData> GetForTeam(long steamID) {
+		public IEnumerable<SaveData> GetForTeam(long steamID, int days = 30, bool desc = true) {
 			EnsureOpen();
 
 			foreach (var sd in Database.Connection.Query<SaveData>(
-				"SELECT * FROM SaveData WHERE SteamID = @sid ORDER BY UnixDays DESC LIMIT 30", new { sid = steamID })) {
+				$"SELECT * FROM SaveData WHERE SteamID = @sid ORDER BY UnixDays {(desc ? "DESC" : "ASC")} LIMIT @days", new { sid = steamID, days })) {
 				QuerrySup(sd);
 				yield return sd;
 			}
