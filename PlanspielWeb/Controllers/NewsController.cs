@@ -22,7 +22,7 @@ namespace PlanspielWeb.Controllers {
 		[Route("/News/{id:int?}")]
 		public IActionResult Index(int? id) {
 			if (id == null)
-				id = newsRepo.GetLatestPageID();
+				id = newsRepo.GetLatestPageID(IsAdmin());
 
 			var news = newsRepo.GetAllForPage(id.Value);
 			if (!news.Any() && !IsAdmin())

@@ -28,10 +28,17 @@ namespace DAL.Repositories {
 			return Database.Connection.Query<News>("SELECT * FROM News WHERE PageID = @pageID;", new { pageID });
 		}
 
-		public int GetLatestPageID() {
+		public int GetLatestPageID(bool admin) {
 			EnsureOpen();
 
-			var result = Database.Connection.Query<News>("SELECT * FROM News ORDER BY PageID DESC LIMIT 1");
+			string sql;
+			if (admin) {
+				sql = "SELECT * FROM News ORDER BY PageID DESC LIMIT 1";
+			} else {
+				sql = "SELECT * FROM News WHERE Visible = true ORDER BY PageID DESC LIMIT 1";
+			}
+
+			var result = Database.Connection.Query<News>(sql);
 			if (!result.Any())
 				return 0;
 

@@ -23,10 +23,14 @@ namespace DAL.Models {
 
 		public bool Visible { get; set; }
 
+		[Range(0, 5)]
 		public int X { get; set; }
+		[Range(0, 2)]
 		public int Y { get; set; }
 
+		[Range(1, 5)]
 		public int Width { get; set; }
+		[Range(1, 2)]
 		public int Height { get; set; }
 
 		public static void Setup(Database database) {
