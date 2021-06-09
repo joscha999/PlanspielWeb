@@ -22,8 +22,7 @@ namespace PlanspielWeb.TagHelpers {
         }
 
         private static string GetScript(string chartName, string chartLabel, List<string> xLabels, List<float> yValues) {
-            return @"<canvas id=""" + chartName + @""" style=""height: 100%; width: 100%;""></canvas>
-<script type=""text/javascript"">
+            return @"<script type=""text/javascript"">
 $(function () {
     var chartName = """ + chartName + @""";
     var ctx = document.getElementById(chartName).getContext('2d');

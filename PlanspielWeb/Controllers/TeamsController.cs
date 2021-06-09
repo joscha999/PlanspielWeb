@@ -30,12 +30,23 @@ namespace PlanspielWeb.Controllers {
             var vm = new TeamDetailsViewModel();
             vm.Team = team;
             vm.BalanceItems = new List<ChartItem>();
+            vm.PollutionItems = new List<ChartItem>();
+            vm.ProfitItems = new List<ChartItem>();
+            vm.CompanyValueItems = new List<ChartItem>();
+            vm.MachineUptimeItems = new List<ChartItem>();
 
-            foreach (var sd in saves.GetForTeam(team.SteamID)) {
+            foreach (var sd in saves.GetForTeam(team.SteamID, 60)) {
                 vm.BalanceItems.Add(new ChartItem { Label = sd.Date.ToString(), Quantity = (float)sd.Balance });
+                vm.PollutionItems.Add(new ChartItem { Label = sd.Date.ToString(), Quantity = (float)sd.AveragePollution });
+                vm.ProfitItems.Add(new ChartItem { Label = sd.Date.ToString(), Quantity = (float)sd.Profit });
+                vm.CompanyValueItems.Add(new ChartItem { Label = sd.Date.ToString(), Quantity = (float)sd.CompanyValue });
+                vm.MachineUptimeItems.Add(new ChartItem { Label = sd.Date.ToString(), Quantity = (float)sd.MachineUptime });
             }
-
             vm.BalanceItems.Reverse();
+            vm.PollutionItems.Reverse();
+            vm.ProfitItems.Reverse();
+            vm.CompanyValueItems.Reverse();
+            vm.MachineUptimeItems.Reverse();
 
             return View(vm);
         }
