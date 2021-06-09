@@ -29,13 +29,13 @@ namespace PlanspielWeb.Controllers {
 
             var vm = new TeamDetailsViewModel();
             vm.Team = team;
-            vm.PriceItems = new List<ChartItem>();
+            vm.BalanceItems = new List<ChartItem>();
 
             foreach (var sd in saves.GetForTeam(team.SteamID)) {
-                vm.PriceItems.Add(new ChartItem { Label = sd.Date.ToString(), Quantity = (float)sd.MachineUptime });
+                vm.BalanceItems.Add(new ChartItem { Label = sd.Date.ToString(), Quantity = (float)sd.Balance });
             }
 
-            vm.PriceItems.Reverse();
+            vm.BalanceItems.Reverse();
 
             return View(vm);
         }

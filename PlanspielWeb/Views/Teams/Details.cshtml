@@ -51,15 +51,28 @@
 }
 
 <div>
+    <div class="row">
+        <div class="col" style="height: 500px; width: 100%;">
+            <linechart chart-name="chart" chart-label="Balance" x-labels="@Model.BalanceItems.Select(x => x.Label).ToList()"
+                       y-values="@Model.BalanceItems.Select(x => x.Quantity).ToList()"></linechart>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+
+@*<div>
     @{
-        var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.PriceItems.Select(x => x.Label).ToList());
-        var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.PriceItems.Select(x => x.Quantity).ToList());
+        var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.BalanceItems.Select(x => x.Label).ToList());
+        var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.BalanceItems.Select(x => x.Quantity).ToList());
     }
     <div class="row">
-        <canvas id="chart"></canvas>
+        <div class="col">
+            <canvas id="chart" style="height: 500px;"></canvas>
+        </div>
+        <div class="col"></div>
     </div>
 
-    <script type="text/javascript">
+        <script type="text/javascript">
         $(function () {
             var chartName = "chart";
             var ctx = document.getElementById(chartName).getContext('2d');
@@ -130,8 +143,8 @@
                 type: 'line'
             });
         });
-    </script>
-</div>
+        </script>
+    </div>*@
 
 <div>
     <hr />
