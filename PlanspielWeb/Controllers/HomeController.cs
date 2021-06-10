@@ -21,7 +21,6 @@ namespace PlanspielWeb.Controllers {
         public IActionResult Error()
             => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 
-        [AdminOnly]
         public IActionResult ShareValues() {
             var shareValues = new List<ShareValuesViewModel>();
 

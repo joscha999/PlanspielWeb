@@ -29,13 +29,12 @@ namespace DAL.Models {
         public int RegionCount { get; set; }
 		public double Balance { get; set; }
 
-		private double _shareValue = -1;
+		internal double _shareValue = -1;
+		[Write(false)]
         public double ShareValue {
             get {
-				return 0;
-
                 if (_shareValue == -1)
-                    _shareValue = ShareRepository.Instance.Calculate(this);
+                    ShareRepository.Instance.RequestCalculation(this);
 
                 return _shareValue;
             }
@@ -102,7 +101,7 @@ namespace DAL.Models {
 [BuildingCount] INTEGER NOT NULL,
 [UnlockedResearchCount] INTEGER NOT NULL,
 [RegionCount] INTEGER NOT NULL,
-[Balance] INTEGER NOT NULL,
+[Balance] REAL NOT NULL,
 [ShareValue] INTEGER NOT NULL
 );");
         }

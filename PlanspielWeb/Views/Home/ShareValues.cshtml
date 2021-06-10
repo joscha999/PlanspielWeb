@@ -10,20 +10,30 @@
 <div class="row">
     <table class="table">
         <thead>
-            <tr>
-                <th>Team</th>
-                <th>Aktienpreis</th>
-                <th>Aktienpreis (Durchschnittspreis)</th>
-                <th>DateTime (last transmission)</th>
-            </tr>
+			<tr>
+				<th>Team</th>
+				<th>Aktienpreis</th>
+				<th>Aktienpreis (Durchschnitt)</th>
+				@if (Context.Session.TryGet<DAL.Models.User>("user", out var user) && user.Admin) {
+					<th>DateTime (last transmission)</th>
+				}
+			</tr>
         </thead>
         <tbody>
             @foreach (var share in Model) {
                 <tr>
                     <td>@share.TeamName</td>
-                    <td>@share.ShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
-                    <td>@share.AvgShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
-                    <td>@share.TimeStamp</td>
+                    <td>
+						@(share.ShareValue == -1 ? "Wird Berechnet ..."
+						: share.ShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us")))
+					</td>
+                    <td>
+						@(share.AvgShareValue == -1 ? "Wird Berechnet ..."
+						: share.AvgShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us")))
+					</td>
+					@if (user != null && user.Admin) {
+						<td>@share.TimeStamp</td>
+					}
                 </tr>
             }
         </tbody>

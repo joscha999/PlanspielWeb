@@ -17,5 +17,7 @@ namespace PlanspielWeb.Models {
 
 		public int NextStartID => CurrentStartID + ItemsPerPage;
 		public int PreviousStartID => CurrentStartID - ItemsPerPage;
+
+		public int CalculationQueueCount { get; set; }
 	}
 }

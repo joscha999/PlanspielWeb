@@ -22,10 +22,12 @@
             }
         </div>
         <div style="text-align: center;">
-            <span class="text-center">
-                SaveData IDs in range
-                @Model.CurrentStartID<span>..</span>@(Math.Max(Model.CurrentStartID - SaveDataListViewModel.ItemsPerPage, 0))
-            </span>
+			<span class="text-center">
+				SaveData IDs in range
+				@Model.CurrentStartID<span>..</span>@(Math.Max(Model.CurrentStartID - SaveDataListViewModel.ItemsPerPage, 0))
+				<a asp-action="ClearShareValues">Clear all Share values</a>
+				<span>#@Model.CalculationQueueCount in Calculation Queue</span>
+			</span>
         </div>
     </div>
 </div>
@@ -80,9 +82,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.RegionCount)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ShareValue)
-                </td>
+				<td>
+					@if (item.ShareValue == -1) {
+						<span>Calculating</span>
+					} else {
+						<span>@item.ShareValue</span>
+					}
+				</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
