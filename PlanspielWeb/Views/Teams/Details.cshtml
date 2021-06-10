@@ -48,6 +48,13 @@
         <a asp-action="Edit" asp-route-id="@Model.Team.Id">Edit</a> |
         <a asp-action="Index">Back to List</a>
     </div>
+
+	<div class="row">
+		<canvas id="chartFAll" style="height: 300px;"></canvas>
+		<chart chart-type="line" chart-name="chartFAll" chart-label="(Admin) Firmenbewertung"
+			   x-labels="@Model.AdminShareValueItems.Select(x => x.Label).ToList()"
+			   y-values="@Model.AdminShareValueItems.Select(x => x.Quantity).ToList()"></chart>
+	</div>
 }
 
 <div>
@@ -95,136 +102,9 @@
     </div>
 </div>
 
-@*<div>
-    @{
-        var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.BalanceItems.Select(x => x.Label).ToList());
-        var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.BalanceItems.Select(x => x.Quantity).ToList());
-    }
-    <div class="row">
-        <div class="col">
-            <canvas id="chart" style="height: 500px;"></canvas>
-        </div>
-        <div class="col"></div>
-    </div>
-
-        <script type="text/javascript">
-        $(function () {
-            var chartName = "chart";
-            var ctx = document.getElementById(chartName).getContext('2d');
-            var data = {
-                labels: @Html.Raw(XLabels),
-                datasets: [{
-                    label: "Machine Uptime",
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 0, 0)',
-                        'rgba(0, 255, 0)',
-                        'rgba(0, 0, 255)',
-                        'rgba(192, 192, 192)',
-                        'rgba(255, 255, 0)',
-                        'rgba(255, 0, 255)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 0, 0)',
-                        'rgba(0, 255, 0)',
-                        'rgba(0, 0, 255)',
-                        'rgba(192, 192, 192)',
-                        'rgba(255, 255, 0)',
-                        'rgba(255, 0, 255)'
-                    ],
-                    borderWidth: 1,
-                    data: @Html.Raw(YValues)
-                }]
-            };
-
-            var options = {
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        },
-                        gridLines: {
-                            display: true,
-                            color: "rgba(255,99,164,0.2)"
-                        }
-                    }],
-                    xAxes: [{
-                        ticks: {
-                            min: 0,
-                            beginAtZero: true
-                        },
-                        gridLines: {
-                            display: false
-                        }
-                    }]
-                }
-            };
-
-            var myChart = new Chart(ctx, {
-                options: options,
-                data: data,
-                type: 'line'
-            });
-        });
-        </script>
-    </div>*@
-
 <div>
     <hr />
     <h4>Firmenberichte des letzten Monats</h4>
-    @*<table class="table">
-        <thead>
-            <tr>
-                <th>Date time (in-game)</th>
-                <th>Profit</th>
-                <th>Company value</th>
-                <th>Machine uptime</th>
-                <th>Avg. pollution</th>
-
-                @if (user != null && user.Admin) {
-                    <th>Share Price</th>
-                    <th>#Buildings</th>
-                    <th>#UnlockedResearchs</th>
-                    <th>#Regions</th>
-                    <th>Actions</th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var data in Model.Data) {
-                <tr>
-                    <td>@data.IngameDate</td>
-                    <td>@data.Profit.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
-                    <td>@data.CompanyValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
-                    <td>@data.MachineUptime.ToString("P2")</td>
-                    <td>@data.AveragePollution.ToString("P2")</td>
-
-                    @if (user != null && user.Admin) {
-                        <td>@data.ShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us"))</td>
-                        <td>@data.BuildingCount</td>
-                        <td>@data.UnlockedResearchCount</td>
-                        <td>@data.RegionCount</td>
-                        <td>
-                            <a asp-controller="SaveDatas" asp-action="DeleteFromTeam"
-                               asp-route-id="@data.Id" asp-route-teamId="@Model.Id">Delete</a>
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>*@
 
     <div id="accordion">
         @foreach (var sd in Model.Team.Data) {

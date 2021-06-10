@@ -39,7 +39,13 @@ namespace PlanspielWeb.Controllers {
                 vm.ShareValueItems.Add(new ChartItem { Label = sd.Date.ToString(), Quantity = (float)sd.ShareValue });
             }
 
-            return View(vm);
+			if (IsAdmin()) {
+				vm.AdminShareValueItems = saves.GetForTeam(team.SteamID, int.MaxValue)
+					.Reverse().Select(sd => new ChartItem { Label = sd.UnixDays.ToString(),
+						Quantity = (float)sd.ShareValue });
+			}
+
+			return View(vm);
         }
 
         [AdminOnly]

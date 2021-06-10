@@ -13,9 +13,9 @@
 			<tr>
 				<th>Team</th>
 				<th>Firmenbewertung</th>
-                <th>Firmenbewertung (Durchschnitt)</th>
 				@if (Context.Session.TryGet<DAL.Models.User>("user", out var user) && user.Admin) {
-					<th>DateTime (last transmission)</th>
+					<th>[Admin] Balance</th>
+					<th>[Admin] DateTime (last transmission)</th>
 				}
 			</tr>
         </thead>
@@ -25,13 +25,12 @@
                     <td>@share.TeamName</td>
                     <td>
 						@(share.ShareValue == -1 ? "Wird Berechnet ..."
-						: share.ShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us")))
-					</td>
-                    <td>
-						@(share.AvgShareValue == -1 ? "Wird Berechnet ..."
-						: share.AvgShareValue.ToString("C2", new System.Globalization.CultureInfo("US-us")))
+						: share.ShareValue.ToString("F2", new System.Globalization.CultureInfo("US-us")))
 					</td>
 					@if (user != null && user.Admin) {
+						<td>
+							@share.Balance.ToString("C2", new System.Globalization.CultureInfo("US-us"))
+						</td>
 						<td>@share.TimeStamp</td>
 					}
                 </tr>

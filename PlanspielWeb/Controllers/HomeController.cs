@@ -35,12 +35,12 @@ namespace PlanspielWeb.Controllers {
                 shareValues.Add(new ShareValuesViewModel {
                     TeamName = team.Name,
                     ShareValue = lastData?.ShareValue ?? 0,
-                    AvgShareValue = teamData.Average(d => d.ShareValue),
+                    Balance = lastData?.Balance ?? 0,
                     TimeStamp = lastData?.IngameDate
                 });
             }
 
-            return View(shareValues.OrderByDescending(s => s.AvgShareValue));
+            return View(shareValues.OrderByDescending(s => s.ShareValue));
         }
     }
 }

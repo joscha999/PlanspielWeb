@@ -13,8 +13,9 @@ namespace PlanspielWeb.Models {
         public List<ChartItem> MachineUptimeItems { get; } = new();
         public List<ChartItem> PollutionItems { get; } = new();
         public List<ChartItem> ShareValueItems { get; } = new();
+		public IEnumerable<ChartItem> AdminShareValueItems { get; set; }
 
-        public TeamDetailsViewModel(Team team) {
+		public TeamDetailsViewModel(Team team) {
             Team = team;
         }
     }

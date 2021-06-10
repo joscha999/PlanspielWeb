@@ -7,7 +7,7 @@ namespace PlanspielWeb.Models {
 	public class ShareValuesViewModel {
 		public string TeamName { get; set; }
 		public double ShareValue { get; set; }
-		public double AvgShareValue { get; set; }
+		public double Balance { get; set; }
 		public string TimeStamp { get; set; }
 	}
 }

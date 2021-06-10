@@ -13,8 +13,24 @@ namespace ShareCalculationSystem {
         public double DefaultShareValue { get; set; } = 100;
 
         public ShareSystem(Func<int, long, int, IEnumerable<SaveDataModel>> dataCallback) {
-            //TODO: add share calcs
-            ShareCalculators.Add(new TestCalculator());
+			//TODO
+			//PolutionHitCalculator :: -pollution | 14 days | trend
+			//MachineDowntimeHitCalculator :: -downtime | 14 days | trend
+			//ProfitabilityCalculator :: +companyValue +profit | 30 days | trend, check against each other
+			//ProductionInvestmentCalculator :: +building +companyValue | 30 days | trend
+			//ResearchBonusCalculator :: +newResearch | 2 days | trend
+			//RegionInvestmentCalculator :: +region | 2 days | trend
+
+			//RiskCalculator :: allData | 180 | spikes
+			//DemandCalculator :: -remainingDemand | 60 days | trend
+
+			//ShareCalculators.Add(new TestCalculator());
+
+			ShareCalculators.Add(new PolutionHitCalculator());
+			ShareCalculators.Add(new MachineDowntimeHitCalculator());
+			ShareCalculators.Add(new ProfitabilityCalculator());
+			ShareCalculators.Add(new ProductionInvestmentCalculator());
+			ShareCalculators.Add(new RegionInvestmentCalculator());
 
             DataCallback = dataCallback;
             MaxRequiredData = ShareCalculators.Max(sc => sc.CalculationPeriod);

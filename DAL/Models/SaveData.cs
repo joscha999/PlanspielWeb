@@ -30,7 +30,6 @@ namespace DAL.Models {
 		public double Balance { get; set; }
 
 		internal double _shareValue = -1;
-		[Write(false)]
         public double ShareValue {
             get {
                 if (_shareValue == -1)

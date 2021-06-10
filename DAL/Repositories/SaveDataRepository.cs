@@ -14,7 +14,8 @@ namespace DAL.Repositories {
 		private string BaseQuery = @"SELECT 
 Id, SteamID, UnixDays, CAST(Profit AS REAL) AS Profit, CAST(CompanyValue AS REAL) AS CompanyValue, 
 CAST(MachineUptime AS REAL) AS MachineUptime, CAST(AveragePollution AS REAL) AS AveragePollution, 
-BuildingCount, UnlockedResearchCount, RegionCount, CAST(Balance AS REAL) AS Balance, ShareValue 
+BuildingCount, UnlockedResearchCount, RegionCount, CAST(Balance AS REAL) AS Balance, 
+CAST(ShareValue AS REAL) AS ShareValue
 FROM SaveData ";
 
         public SaveDataRepository(Database database) {
