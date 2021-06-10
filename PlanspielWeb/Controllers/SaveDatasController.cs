@@ -29,7 +29,8 @@ namespace PlanspielWeb.Controllers {
 				CanGoNext = currStartID < max,
 				CanGoPrevious = currStartID - SaveDataListViewModel.ItemsPerPage > min,
 				CurrentStartID = currStartID,
-				Data = saveData.GetPagedFrom(currStartID, SaveDataListViewModel.ItemsPerPage)
+				Data = saveData.GetPagedFrom(currStartID, SaveDataListViewModel.ItemsPerPage),
+				CalculationQueueCount = ShareRepository.Instance.CalculationQueueCount
 			};
 
 			return View(vm);
@@ -119,5 +120,11 @@ namespace PlanspielWeb.Controllers {
 
             return RedirectToAction("Details", "Teams", new { id = teamId });
         }
-    }
+
+		public IActionResult ClearShareValues() {
+			saveData.ClearShareValues();
+
+			return RedirectToAction(nameof(Index));
+		}
+	}
 }

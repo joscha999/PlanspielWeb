@@ -11,6 +11,12 @@ namespace DAL.Repositories {
     public class SaveDataRepository {
         private readonly Database Database;
 
+		private string BaseQuery = @"SELECT 
+Id, SteamID, UnixDays, CAST(Profit AS REAL) AS Profit, CAST(CompanyValue AS REAL) AS CompanyValue, 
+CAST(MachineUptime AS REAL) AS MachineUptime, CAST(AveragePollution AS REAL) AS AveragePollution, 
+BuildingCount, UnlockedResearchCount, RegionCount, CAST(Balance AS REAL) AS Balance, ShareValue 
+FROM SaveData ";
+
         public SaveDataRepository(Database database) {
             Database = database;
         }
@@ -34,7 +40,8 @@ namespace DAL.Repositories {
 			EnsureOpen();
 
 			foreach (var sd in Database.Connection.Query<SaveData>(
-				$"SELECT * FROM SaveData WHERE SteamID = @sid ORDER BY UnixDays {(desc ? "DESC" : "ASC")} LIMIT @days", new { sid = steamID, days })) {
+				BaseQuery + $"WHERE SteamID = @sid ORDER BY UnixDays {(desc ? "DESC" : "ASC")} LIMIT @days",
+				new { sid = steamID, days })) {
 				QuerrySup(sd);
 				yield return sd;
 			}
@@ -43,17 +50,17 @@ namespace DAL.Repositories {
 		public SaveData GetById(int id) {
             EnsureOpen();
 
-            var sd = Database.Connection.Query<SaveData>("SELECT * FROM SaveData WHERE Id = @id", new { id }).FirstOrDefault();
+            var sd = Database.Connection.Query<SaveData>(BaseQuery + "WHERE Id = @id", new { id }).FirstOrDefault();
 			QuerrySup(sd);
 			return sd;
         }
 
-        public IEnumerable<SaveData> GetPeriod(int unixDayStart, int unixDayEnd) {
+        public IEnumerable<SaveData> GetPeriod(int end, int start, long steamID) {
             EnsureOpen();
 
             foreach (var sd in Database.Connection.Query<SaveData>(
-                "SELECT * FROM SaveData WHERE UnixDays >= @start AND UnixDays <= @end ORDER BY UnixDays DESC",
-                new { start = unixDayStart, end = unixDayEnd })) {
+				BaseQuery + "WHERE UnixDays >= @start AND UnixDays < @end AND SteamID = @steamID ORDER BY UnixDays DESC",
+                new { end, start, steamID })) {
 				QuerrySup(sd);
 				yield return sd;
 			}
@@ -63,7 +70,18 @@ namespace DAL.Repositories {
 			EnsureOpen();
 
 			var sd = Database.Connection.QueryFirstOrDefault<SaveData>(
-				"SELECT * FROM SaveData WHERE UnixDays = @day", new { day = unixDay });
+				BaseQuery + "WHERE UnixDays = @day", new { day = unixDay });
+			if (sd != null)
+				QuerrySup(sd);
+			return sd;
+		}
+
+		public SaveData GetPrior(int unixDay, long steamID) {
+			EnsureOpen();
+
+			var sd = Database.Connection.QueryFirstOrDefault<SaveData>(
+				BaseQuery + "WHERE UnixDays < @day AND SteamID = @steamID ORDER BY UnixDays DESC LIMIT 1",
+				new { day = unixDay, steamID });
 			if (sd != null)
 				QuerrySup(sd);
 			return sd;
@@ -73,7 +91,7 @@ namespace DAL.Repositories {
 			EnsureOpen();
 
 			foreach (var sd in Database.Connection.Query<SaveData>(
-				"SELECT * FROM SaveData WHERE Id <= @max ORDER BY Id DESC LIMIT @amount",
+				BaseQuery + "WHERE Id <= @max ORDER BY Id DESC LIMIT @amount",
 				new { max = unixDayMax, amount = count })) {
 				QuerrySup(sd);
 				yield return sd;
@@ -148,10 +166,10 @@ Values(@id, @sdid, @loanAmount, @loanInterest)",
         public void Update(SaveData data) {
             EnsureOpen();
 
-            Database.Connection.Execute(@"UPDATE SaveData SET
-Id = @id, SteamID = @steamId, UnixDays = @timeStamp, Profit = @profit, CompanyValue = @companyValue,
-MachineUptime = @machineUptime, AveragePollution = @pollution, BuildingCount = @buildingCount,
-UnlockedResearchCount = @researchCount, RegionCount = @regionCount, Balance = @balance, @ShareValue = shareValue
+            Database.Connection.Execute(@"UPDATE SaveData SET 
+Id = @id, SteamID = @steamId, UnixDays = @timeStamp, Profit = @profit, CompanyValue = @companyValue, 
+MachineUptime = @machineUptime, AveragePollution = @pollution, BuildingCount = @buildingCount, 
+UnlockedResearchCount = @researchCount, RegionCount = @regionCount, Balance = @balance, ShareValue = @shareValue 
 WHERE Id = @id",
                 new {
                     id = data.Id,
@@ -171,7 +189,7 @@ WHERE Id = @id",
 			foreach (var pd in data.DemandSatisfaction) {
 				Database.Connection.Execute(@"UPDATE ProductDemandInfo SET
 Id = @id, SaveDataId = @sdid, ProductName = @productName, Settlement = @settlement,
-Shop = @shop, Demand = @demand, Sales = @sales",
+Shop = @shop, Demand = @demand, Sales = @sales WHERE Id = @id",
 					new {
 						id = pd.ID,
 						sdid = data.Id,
@@ -185,7 +203,7 @@ Shop = @shop, Demand = @demand, Sales = @sales",
 
 			foreach (var li in data.LoansList) {
 				Database.Connection.Execute(@"UPDATE LoanInfo SET
-Id = @id, SaveDataId = @sdid, LoanAmount = @loanAmount, LoanInterest = @loanInterest",
+Id = @id, SaveDataId = @sdid, LoanAmount = @loanAmount, LoanInterest = @loanInterest WHERE Id = @id",
 					new {
 						id = li.ID,
 						sdid = data.Id,
@@ -206,13 +224,10 @@ Id = @id, SaveDataId = @sdid, LoanAmount = @loanAmount, LoanInterest = @loanInte
 			Database.Connection.Execute("DELETE FROM LoanInfo WHERE SaveDataId = @id;", new { id = id.Value });
 		}
 
-        public IEnumerable<SaveData> GetAll() {
-            EnsureOpen();
+		public void ClearShareValues() {
+			EnsureOpen();
 
-            foreach (var sd in Database.Connection.Query<SaveData>("SELECT * FROM SaveData")) {
-				QuerrySup(sd);
-				yield return sd;
-			}
-        }
+			Database.Connection.Execute("UPDATE SaveData SET ShareValue = -1");
+		}
     }
 }

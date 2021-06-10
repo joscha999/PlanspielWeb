@@ -14,25 +14,28 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-light">
             <div class="navbar-collapse collapse w-25 order-1 order-md-0 dual-collapse2">
-                @if (Context.Session.TryGet<DAL.Models.User>("user", out var user) && user.Admin) {
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item @((string)ViewData["current"] == "users" ? "active" : "")">
-                            <a class="nav-link" asp-controller="Users" asp-action="Index">Users</a>
-                        </li>
-                        <li class="nav-item @((string)ViewData["current"] == "teams" ? "active" : "")">
-                            <a class="nav-link" asp-controller="Teams" asp-action="Index">Teams</a>
-                        </li>
-                        <li class="nav-item @((string)ViewData["current"] == "saveData" ? "active" : "")">
-                            <a class="nav-link" asp-controller="SaveDatas" asp-action="Index">Save Data</a>
-                        </li>
-                        <li class="nav-item @((string)ViewData["current"] == "shareValues" ? "active" : "")">
-                            <a class="nav-link" asp-controller="Home" asp-action="ShareValues">Shares</a>
-                        </li>
-                        <li class="nav-item @((string)ViewData["current"] == "tasks" ? "active" : "")">
-                            <a class="nav-link" asp-controller="Tasks" asp-action="Index">Task Management</a>
-                        </li>
-                    </ul>
-                }
+				<ul class="navbar-nav mr-auto">
+					@if (Context.Session.TryGet<DAL.Models.User>("user", out var user) && user.Admin) {
+						<li class="nav-item @((string)ViewData["current"] == "users" ? "active" : "")">
+							<a class="nav-link" asp-controller="Users" asp-action="Index">Users</a>
+						</li>
+						<li class="nav-item @((string)ViewData["current"] == "teams" ? "active" : "")">
+							<a class="nav-link" asp-controller="Teams" asp-action="Index">Teams</a>
+						</li>
+						<li class="nav-item @((string)ViewData["current"] == "saveData" ? "active" : "")">
+							<a class="nav-link" asp-controller="SaveDatas" asp-action="Index">Save Data</a>
+						</li>
+						<li class="nav-item @((string)ViewData["current"] == "tasks" ? "active" : "")">
+							<a class="nav-link" asp-controller="Tasks" asp-action="Index">Task Management</a>
+						</li>
+					}
+
+					@if (user != null) {
+						<li class="nav-item @((string)ViewData["current"] == "shareValues" ? "active" : "")">
+							<a class="nav-link" asp-controller="Home" asp-action="ShareValues">Firmen</a>
+						</li>
+					}
+				</ul>
             </div>
             <div class="mx-auto order-0">
                 <a class="navbar-brand mx-auto" asp-controller="Home" asp-action="Index">Planspiel - BWL - Uni Hildesheim</a>

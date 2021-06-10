@@ -8,11 +8,11 @@ namespace ShareCalculationSystem {
     public class ShareSystem {
         public List<ShareCalculator> ShareCalculators { get; } = new List<ShareCalculator>();
         public int MaxRequiredData { get; }
-        public Func<Date, int, IEnumerable<SaveDataModel>> DataCallback { get; }
+        public Func<int, long, int, IEnumerable<SaveDataModel>> DataCallback { get; }
 
         public double DefaultShareValue { get; set; } = 100;
 
-        public ShareSystem(Func<Date, int, IEnumerable<SaveDataModel>> dataCallback) {
+        public ShareSystem(Func<int, long, int, IEnumerable<SaveDataModel>> dataCallback) {
             //TODO: add share calcs
             ShareCalculators.Add(new TestCalculator());
 
@@ -22,11 +22,11 @@ namespace ShareCalculationSystem {
 
         public double Calculate(SaveDataModel current) {
             //get data
-            var data = DataCallback(new Date(current.UnixDays), MaxRequiredData);
+            var data = DataCallback(current.UnixDays, current.SteamID, MaxRequiredData).OrderBy(d => d.UnixDays);
 
             //calculate for all non calced
             var dataCount = data.Count();
-            if (data == null || dataCount <= 1)
+            if (data == null || dataCount == 0)
                 return DefaultShareValue;
 
             //calculate current
@@ -37,7 +37,7 @@ namespace ShareCalculationSystem {
                 shareDiff += calculator.Calculate(data.Skip(start).Take(calculator.CalculationPeriod));
             }
 
-            return Math.Max(0, data.Skip(dataCount - 2).Take(1).Single().ShareValue + shareDiff);
+            return Math.Max(0, data.Last().ShareValue + shareDiff);
         }
     }
 }
