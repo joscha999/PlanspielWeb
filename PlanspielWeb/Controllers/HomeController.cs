@@ -10,9 +10,11 @@ using PlanspielWeb.Models;
 namespace PlanspielWeb.Controllers {
     public class HomeController : AppController {
         private readonly TeamRepository teams;
+		private readonly SaveDataRepository saveData;
 
-        public HomeController(TeamRepository teamRepository) {
+        public HomeController(TeamRepository teamRepository, SaveDataRepository saveDataRepository) {
             teams = teamRepository;
+			saveData = saveDataRepository;
         }
 
         public IActionResult Index() => View();
@@ -25,14 +27,15 @@ namespace PlanspielWeb.Controllers {
             var shareValues = new List<ShareValuesViewModel>();
 
             foreach (var team in teams.GetAll()) {
-                if (team.Data == null || !team.Data.Any())
+				var teamData = saveData.GetForTeam(team.SteamID, int.MaxValue);
+                if (teamData == null || !teamData.Any())
                     continue;
 
-                var lastData = team.Data.LastOrDefault();
+                var lastData = teamData.FirstOrDefault();
                 shareValues.Add(new ShareValuesViewModel {
                     TeamName = team.Name,
                     ShareValue = lastData?.ShareValue ?? 0,
-                    AvgShareValue = team.Data.Average(d => d.ShareValue),
+                    AvgShareValue = teamData.Average(d => d.ShareValue),
                     TimeStamp = lastData?.IngameDate
                 });
             }
