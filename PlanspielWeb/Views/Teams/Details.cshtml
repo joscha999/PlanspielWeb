@@ -52,36 +52,46 @@
 
 <div>
     <hr />
-    <h4>Kontrollcenter</h4>
+    <h4>Kontrollcenter (Letzte 60 Tage)</h4>
     <div class="row">
         <div class="col-4">
             <canvas id="chartBal" style="height: 500px;"></canvas>
-            <linechart chart-name="chartBal" chart-label="Balance" x-labels="@Model.BalanceItems.Select(x => x.Label).ToList()"
-                       y-values="@Model.BalanceItems.Select(x => x.Quantity).ToList()"></linechart>
+            <chart chart-type="line" chart-name="chartBal" chart-label="Kontostand"
+                   x-labels="@Model.BalanceItems.Select(x => x.Label).ToList()"
+                   y-values="@Model.BalanceItems.Select(x => x.Quantity).ToList()"></chart>
         </div>
         <div class="col-4">
             <canvas id="chartPol" style="height: 500px;"></canvas>
-            <linechart chart-name="chartPol" chart-label="Average Pollution" x-labels="@Model.PollutionItems.Select(x => x.Label).ToList()"
-                       y-values="@Model.PollutionItems.Select(x => x.Quantity).ToList()"></linechart>
+            <chart chart-type="line" chart-name="chartPol" chart-label="Durchschnittliche Verschmutzung"
+                   x-labels="@Model.PollutionItems.Select(x => x.Label).ToList()"
+                   y-values="@Model.PollutionItems.Select(x => x.Quantity).ToList()"></chart>
         </div>
         <div class="col-4">
             <canvas id="chartPro" style="height: 500px;"></canvas>
-            <linechart chart-name="chartPro" chart-label="Profit" x-labels="@Model.ProfitItems.Select(x => x.Label).ToList()"
-                       y-values="@Model.ProfitItems.Select(x => x.Quantity).ToList()"></linechart>
+            <chart chart-type="line" chart-name="chartPro" chart-label="Gewinn"
+                   x-labels="@Model.ProfitItems.Select(x => x.Label).ToList()"
+                   y-values="@Model.ProfitItems.Select(x => x.Quantity).ToList()"></chart>
         </div>
     </div>
     <div class="row">
         <div class="col-4">
             <canvas id="chartCom" style="height: 500px;"></canvas>
-            <linechart chart-name="chartCom" chart-label="Company Value" x-labels="@Model.CompanyValueItems.Select(x => x.Label).ToList()"
-                       y-values="@Model.CompanyValueItems.Select(x => x.Quantity).ToList()"></linechart>
+            <chart chart-type="line" chart-name="chartCom" chart-label="Firmenwert"
+                   x-labels="@Model.CompanyValueItems.Select(x => x.Label).ToList()"
+                   y-values="@Model.CompanyValueItems.Select(x => x.Quantity).ToList()"></chart>
         </div>
         <div class="col-4">
             <canvas id="chartMac" style="height: 500px;"></canvas>
-            <linechart chart-name="chartMac" chart-label="Machine Uptime" x-labels="@Model.MachineUptimeItems.Select(x => x.Label).ToList()"
-                       y-values="@Model.MachineUptimeItems.Select(x => x.Quantity).ToList()"></linechart>
+            <chart chart-type="line" chart-name="chartMac" chart-label="Durchschnittliche Maschinennutzung"
+                   x-labels="@Model.MachineUptimeItems.Select(x => x.Label).ToList()"
+                   y-values="@Model.MachineUptimeItems.Select(x => x.Quantity).ToList()"></chart>
         </div>
-        <div class="col-4"></div>
+        <div class="col-4">
+            <canvas id="chartF" style="height: 500px;"></canvas>
+            <chart chart-type="line" chart-name="chartF" chart-label="Firmenbewertung"
+                   x-labels="@Model.ShareValueItems.Select(x => x.Label).ToList()"
+                   y-values="@Model.ShareValueItems.Select(x => x.Quantity).ToList()"></chart>
+        </div>
     </div>
 </div>
 

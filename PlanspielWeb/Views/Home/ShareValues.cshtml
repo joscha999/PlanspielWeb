@@ -1,19 +1,19 @@
 ﻿@model IEnumerable<PlanspielWeb.Models.ShareValuesViewModel>
 
 @{
-    ViewData["Title"] = "Aktienkurse";
+    ViewData["Title"] = "Firmenübersicht";
     ViewData["current"] = "shareValues";
 }
 
-<h4>Aktienkurse</h4>
+<h4>Firmenübersicht</h4>
 <hr />
 <div class="row">
     <table class="table">
         <thead>
 			<tr>
 				<th>Team</th>
-				<th>Aktienpreis</th>
-				<th>Aktienpreis (Durchschnitt)</th>
+				<th>Firmenbewertung</th>
+                <th>Firmenbewertung (Durchschnitt)</th>
 				@if (Context.Session.TryGet<DAL.Models.User>("user", out var user) && user.Admin) {
 					<th>DateTime (last transmission)</th>
 				}
@@ -38,4 +38,10 @@
             }
         </tbody>
     </table>
+</div>
+<div class="row">
+    <canvas id="chartF" style="height: 500px;"></canvas>
+    <chart chart-type="bar" chart-name="chartF" chart-label="Firmenbewertung"
+           x-labels="@Model.Select(x => x.TeamName).ToList()"
+           y-values="@Model.Select(x => (float)x.ShareValue).ToList()"></chart>
 </div>
