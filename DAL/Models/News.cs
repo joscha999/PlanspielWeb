@@ -28,9 +28,9 @@ namespace DAL.Models {
 		[Range(0, 2)]
 		public int Y { get; set; }
 
-		[Range(1, 5)]
+		[Range(1, 6)]
 		public int Width { get; set; }
-		[Range(1, 2)]
+		[Range(1, 3)]
 		public int Height { get; set; }
 
 		public static void Setup(Database database) {

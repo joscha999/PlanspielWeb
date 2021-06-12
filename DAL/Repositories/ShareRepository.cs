@@ -30,7 +30,7 @@ namespace DAL.Repositories {
             SaveDataRepository = saveDataRepository;
 
 			CalculatorThread = new Thread(Work);
-			CalculatorThread.Start();
+			//CalculatorThread.Start();
         }
 
 		private IEnumerable<SaveDataModel> GetData(int unixStartDay, long steamID, int period) {
