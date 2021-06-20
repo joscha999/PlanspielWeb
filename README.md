@@ -5,3 +5,5 @@ A complementary system used to run and evaluate a "Planspiel" (economical simula
 See https://github.com/joscha999/ROIData for the Modification used to control Rise Of Industry.
 
 See https://github.com/joscha999/ROIGraphParser for utility code used early on.
+
+See https://github.com/rockymine/RoIModAndSaves for the game-saves and the latest binary of the mod.
