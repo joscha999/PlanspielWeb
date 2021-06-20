@@ -1,6 +1,6 @@
 # PlanspielWeb
 
-A complementary system used to run and evaluate a game-based university course, using the computer game Rise Of Industry as the front end.
+A complementary system used to run and evaluate a game-based university course, using the computer game 'Rise of Industry' (https://riseofindustry.com) as the front end.
 
 See https://github.com/joscha999/ROIData for the Modification used to control Rise Of Industry.
 
