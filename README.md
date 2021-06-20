@@ -6,4 +6,4 @@ See https://github.com/joscha999/ROIData for the Modification used to control Ri
 
 See https://github.com/joscha999/ROIGraphParser for utility code used early on.
 
-See https://github.com/rockymine/RoIModAndSaves for the game-saves and the latest binary of the mod.
+See https://github.com/rockymine/RoIModAndSaves for the game-saves and the binary of the mod used with the course of 2020.
