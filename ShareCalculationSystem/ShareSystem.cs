@@ -20,6 +20,7 @@ namespace ShareCalculationSystem {
 			//ProductionInvestmentCalculator :: +building +companyValue | 30 days | trend
 			//ResearchBonusCalculator :: +newResearch | 2 days | trend
 			//RegionInvestmentCalculator :: +region | 2 days | trend
+			//StoredGoodsHitCalculator - use stored goods to determine hit
 
 			//RiskCalculator :: allData | 180 | spikes
 			//DemandCalculator :: -remainingDemand | 60 days | trend
@@ -31,6 +32,7 @@ namespace ShareCalculationSystem {
 			ShareCalculators.Add(new ProfitabilityCalculator());
 			ShareCalculators.Add(new ProductionInvestmentCalculator());
 			ShareCalculators.Add(new RegionInvestmentCalculator());
+			ShareCalculators.Add(new NegativeBalanceHitCalculator());
 
             DataCallback = dataCallback;
             MaxRequiredData = ShareCalculators.Max(sc => sc.CalculationPeriod);
@@ -53,7 +55,8 @@ namespace ShareCalculationSystem {
                 shareDiff += calculator.Calculate(data.Skip(start).Take(calculator.CalculationPeriod));
             }
 
-            return Math.Max(0, data.Last().ShareValue + shareDiff);
+			//return Math.Max(0, data.Last().ShareValue + shareDiff);
+			return data.Last().ShareValue + shareDiff;
         }
     }
 }

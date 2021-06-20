@@ -56,6 +56,14 @@ FROM SaveData ";
 			return sd;
         }
 
+		public bool DayDataExists(long steamID, int unixDay) {
+			EnsureOpen();
+
+			return Database.Connection.ExecuteScalar<int>(
+				"SELECT COUNT(Id) FROM SaveData WHERE SteamID = @steamID AND UnixDays = @unixDay",
+				new { steamID, unixDay }) != 0;
+		}
+
         public IEnumerable<SaveData> GetPeriod(int end, int start, long steamID) {
             EnsureOpen();
 

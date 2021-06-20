@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="SaveData\**" />
+    <Content Remove="SaveData\**" />
+    <EmbeddedResource Remove="SaveData\**" />
+    <None Remove="SaveData\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 

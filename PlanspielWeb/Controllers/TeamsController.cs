@@ -10,10 +10,13 @@ namespace PlanspielWeb.Controllers {
     public class TeamsController : AppController {
         private readonly TeamRepository teams;
         private readonly SaveDataRepository saves;
+		private readonly ShareRepository shares;
 
-        public TeamsController(TeamRepository teamRepository, SaveDataRepository saveDataRepository) {
+        public TeamsController(TeamRepository teamRepository, SaveDataRepository saveDataRepository,
+			ShareRepository shareRepository) {
             teams = teamRepository;
             saves = saveDataRepository;
+			shares = shareRepository;
         }
 
         [AdminOnly]
@@ -40,8 +43,8 @@ namespace PlanspielWeb.Controllers {
             }
 
 			if (IsAdmin()) {
-				vm.AdminShareValueItems = saves.GetForTeam(team.SteamID, int.MaxValue)
-					.Reverse().Select(sd => new ChartItem { Label = sd.UnixDays.ToString(),
+				vm.AdminShareValueItems = shares.GetCachedForTeam(team.SteamID)
+					.Select(sd => new ChartItem { Label = sd.UnixDays.ToString(),
 						Quantity = (float)sd.ShareValue });
 			}
 

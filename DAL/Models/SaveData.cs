@@ -29,11 +29,13 @@ namespace DAL.Models {
         public int RegionCount { get; set; }
 		public double Balance { get; set; }
 
-		internal double _shareValue = -1;
+		internal double _shareValue = double.MinValue;
         public double ShareValue {
             get {
-                if (_shareValue == -1)
+                if (_shareValue == double.MinValue && ShareRepository.Instance != null)
                     ShareRepository.Instance.RequestCalculation(this);
+				if (_shareValue == double.MinValue)
+					return -1;
 
                 return _shareValue;
             }

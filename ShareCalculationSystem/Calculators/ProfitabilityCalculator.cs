@@ -6,6 +6,8 @@ using System.Text;
 
 namespace ShareCalculationSystem.Calculators {
 	public class ProfitabilityCalculator : ShareCalculator {
+		private const double PositiveAdjustment = 1.1d;
+
 		public override int CalculationPeriod => 28;
 
 		public override double Calculate(IEnumerable<SaveDataModel> data) {
@@ -19,7 +21,11 @@ namespace ShareCalculationSystem.Calculators {
 				currLoanAmount = 20_000_000;
 
 			foreach (var sd in data.Skip(1)) {
-				changeProfit += sd.Profit - currentProfit;
+				var diff = sd.Profit - currentProfit;
+				if (diff > 0)
+					diff *= PositiveAdjustment;
+
+				changeProfit += diff;
 				currentProfit = sd.Profit;
 
 				changeCV += sd.CompanyValue - currentCV;

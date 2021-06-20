@@ -26,7 +26,7 @@ namespace ShareCalculationSystem.Calculators {
 			if (changeBuildingCount <= 0)
 				return 0;
 
-			return changeCV / 10_000_000;
+			return changeCV / 40_000_000;
 		}
 	}
 }
